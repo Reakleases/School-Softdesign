@@ -3,4 +3,16 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="color_text_light">#FFFFFF</color>
+
+    <color name="color_tool_bar_red">#F44336</color>
+    <color name="color_tool_bar_green">#4CAF50</color>
+    <color name="color_tool_bar_blue">#2196F3</color>
+    <color name="color_status_bar_red">#D32F2F</color>
+    <color name="color_status_bar_green">#388E3C</color>
+    <color name="color_status_bar_blue">#1976D2</color>
+
+
+    <color name="icon_color">#ffffff</color>
+
 </resources>
