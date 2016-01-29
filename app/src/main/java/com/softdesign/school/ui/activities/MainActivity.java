@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -29,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     int mStatusBarColor;
     int mToolBarColor;
 
-    EditText mEdtiText;
+    EditText mEditText;
     CheckBox mCheckBox;
     Button mButtonBlue;
     Button mButtonRed;
@@ -47,10 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Lg.e(this.getLocalClassName(), "========================\non Create");
 
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-
-
-        mEdtiText = (EditText) findViewById(R.id.editText2);
+        mEditText = (EditText) findViewById(R.id.editText2);
 
         mCheckBox = (CheckBox) findViewById(R.id.checkBox);
         mCheckBox.setOnClickListener(this);
@@ -142,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Lg.e(this.getLocalClassName(), "data was saved");
         outState.putInt(STATUS_BAR_COLOR, mStatusBarColor);
         outState.putInt(TOOL_BAR_COLOR, mToolBarColor);
-        outState.putBoolean(VISIBLE_KEY, mEdtiText.getVisibility() == View.VISIBLE);
+        outState.putBoolean(VISIBLE_KEY, mEditText.getVisibility() == View.VISIBLE);
 
     }
 
@@ -157,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mToolBarColor = savedInstanceState.getInt(TOOL_BAR_COLOR);
             setThemeColor(mStatusBarColor, mToolBarColor);
             int visibleState = savedInstanceState.getBoolean(VISIBLE_KEY) ? View.VISIBLE : View.INVISIBLE;
-            mEdtiText.setVisibility(visibleState);
+            mEditText.setVisibility(visibleState);
         }
     }
 
@@ -168,9 +164,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.checkBox:
                 Toast.makeText(this, "Click!", Toast.LENGTH_SHORT).show();
                 if (mCheckBox.isChecked()) {
-                    mEdtiText.setVisibility(View.INVISIBLE);
+                    mEditText.setVisibility(View.INVISIBLE);
                 } else {
-                    mEdtiText.setVisibility(View.VISIBLE);
+                    mEditText.setVisibility(View.VISIBLE);
                 }
                 break;
             case R.id.btn_blue:
