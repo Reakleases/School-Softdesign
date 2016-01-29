@@ -25,16 +25,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String STATUS_BAR_COLOR = "Status Bar Color";
     public static final String VISIBLE_KEY = "visible";
 
-    int mStatusBarColor;
-    int mToolBarColor;
+    private int mStatusBarColor;
+    private int mToolBarColor;
 
-    EditText mEditText;
-    CheckBox mCheckBox;
-    Button mButtonBlue;
-    Button mButtonRed;
-    Button mButtonGreen;
-    Toolbar mToolBar;
-    ActionBar mActionBar;
+    private EditText mEditText;
+    private CheckBox mCheckBox;
+    private Button mButtonBlue;
+    private Button mButtonRed;
+    private Button mButtonGreen;
+    private Toolbar mToolBar;
+    private ActionBar mActionBar;
 
 
     @Override
