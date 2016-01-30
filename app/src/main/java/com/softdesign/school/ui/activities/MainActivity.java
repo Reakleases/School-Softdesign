@@ -3,18 +3,29 @@ package com.softdesign.school.ui.activities;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.softdesign.school.R;
+import com.softdesign.school.ui.fragments.ContactsFragment;
+import com.softdesign.school.ui.fragments.ProfileFragment;
+import com.softdesign.school.ui.fragments.SettingFragment;
+import com.softdesign.school.ui.fragments.TasksFragment;
+import com.softdesign.school.ui.fragments.TeamFragment;
 import com.softdesign.school.utils.Lg;
 
 
@@ -23,18 +34,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public static final String TOOL_BAR_COLOR = "Tool Bar Color";
     public static final String STATUS_BAR_COLOR = "Status Bar Color";
-    public static final String VISIBLE_KEY = "visible";
+    //public static final String VISIBLE_KEY = "visible";
 
     private int mStatusBarColor;
     private int mToolBarColor;
 
-    private EditText mEditText;
+    private EditText mEdtiText;
     private CheckBox mCheckBox;
     private Button mButtonBlue;
     private Button mButtonRed;
     private Button mButtonGreen;
     private Toolbar mToolBar;
     private ActionBar mActionBar;
+
+    private NavigationView mNavigationView;
+    private DrawerLayout mNavigationDrawer;
+
+    private Fragment mFragment;
+    private FrameLayout mFrameContainer;
 
 
     @Override
@@ -45,28 +62,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setTitle("School custom bars");
         Lg.e(this.getLocalClassName(), "========================\non Create");
 
+        mNavigationDrawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
 
-        mEditText = (EditText) findViewById(R.id.editText2);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
-        mCheckBox = (CheckBox) findViewById(R.id.checkBox);
-        mCheckBox.setOnClickListener(this);
+//        mEdtiText = (EditText) findViewById(R.id.editText2);
 
-        mButtonBlue = (Button) findViewById(R.id.btn_blue);
-        mButtonBlue.setOnClickListener(this);
+//        mCheckBox = (CheckBox) findViewById(R.id.checkBox);
+//        mCheckBox.setOnClickListener(this);
 
-        mButtonRed = (Button) findViewById(R.id.btn_red);
-        mButtonRed.setOnClickListener(this);
-
-        mButtonGreen = (Button) findViewById(R.id.btn_green);
-        mButtonGreen.setOnClickListener(this);
+//        mButtonBlue = (Button) findViewById(R.id.btn_blue);
+//        mButtonBlue.setOnClickListener(this);
+//
+//        mButtonRed = (Button) findViewById(R.id.btn_red);
+//        mButtonRed.setOnClickListener(this);
+//
+//        mButtonGreen = (Button) findViewById(R.id.btn_green);
+//        mButtonGreen.setOnClickListener(this);
 
         mToolBar = (Toolbar) findViewById(R.id.toolbar);
 
 
         getNewToolBar();
         setupToolBar();
+        setupDrawer();
 
-
+        if (savedInstanceState != null) {
+            //getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_container, mFragment).addToBackStack(null).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_container, new ProfileFragment()).commit();
+        }
     }
 
     /**
@@ -92,7 +119,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            Toast.makeText(this, "Click!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Click!", Toast.LENGTH_SHORT).show();
+            mNavigationDrawer.openDrawer(GravityCompat.START);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -138,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Lg.e(this.getLocalClassName(), "data was saved");
         outState.putInt(STATUS_BAR_COLOR, mStatusBarColor);
         outState.putInt(TOOL_BAR_COLOR, mToolBarColor);
-        outState.putBoolean(VISIBLE_KEY, mEditText.getVisibility() == View.VISIBLE);
+        //outState.putBoolean(VISIBLE_KEY, mEdtiText.getVisibility() == View.VISIBLE);
 
     }
 
@@ -152,8 +180,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mStatusBarColor = savedInstanceState.getInt(STATUS_BAR_COLOR);
             mToolBarColor = savedInstanceState.getInt(TOOL_BAR_COLOR);
             setThemeColor(mStatusBarColor, mToolBarColor);
-            int visibleState = savedInstanceState.getBoolean(VISIBLE_KEY) ? View.VISIBLE : View.INVISIBLE;
-            mEditText.setVisibility(visibleState);
+            // int visibleState = savedInstanceState.getBoolean(VISIBLE_KEY) ? View.VISIBLE : View.INVISIBLE;
+            // mEdtiText.setVisibility(visibleState);
         }
     }
 
@@ -164,9 +192,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.checkBox:
                 Toast.makeText(this, "Click!", Toast.LENGTH_SHORT).show();
                 if (mCheckBox.isChecked()) {
-                    mEditText.setVisibility(View.INVISIBLE);
+                    mEdtiText.setVisibility(View.INVISIBLE);
                 } else {
-                    mEditText.setVisibility(View.VISIBLE);
+                    mEdtiText.setVisibility(View.VISIBLE);
                 }
                 break;
             case R.id.btn_blue:
@@ -198,6 +226,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             getWindow().setStatusBarColor(colorStatusBar);
         }
         mActionBar.setBackgroundDrawable(new ColorDrawable(colorToolBar));
+    }
+
+
+    private void setupDrawer() {
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.drawer_profile:
+                        mNavigationView.getMenu().findItem(R.id.drawer_profile).setChecked(true);
+                        mFragment = new ProfileFragment();
+                        break;
+                    case R.id.drawer_contacts:
+                        mNavigationView.getMenu().findItem(R.id.drawer_contacts).setChecked(true);
+                        mFragment = new ContactsFragment();
+                        break;
+                    case R.id.drawer_team:
+                        mNavigationView.getMenu().findItem(R.id.drawer_team).setChecked(true);
+                        mFragment = new TeamFragment();
+                        break;
+                    case R.id.drawer_tasks:
+                        mNavigationView.getMenu().findItem(R.id.drawer_tasks).setChecked(true);
+                        mFragment = new TasksFragment();
+                        break;
+                    case R.id.drawer_settings:
+                        mNavigationView.getMenu().findItem(R.id.drawer_settings).setChecked(true);
+                        mFragment = new SettingFragment();
+                        break;
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_container, mFragment).addToBackStack(mFragment.getClass().getName()).commit();
+                mNavigationDrawer.closeDrawers();
+                return false;
+            }
+        });
+
     }
 }
 
