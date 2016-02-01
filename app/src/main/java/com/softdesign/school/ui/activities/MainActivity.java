@@ -14,11 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.softdesign.school.R;
 import com.softdesign.school.ui.fragments.ContactsFragment;
@@ -34,20 +30,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public static final String TOOL_BAR_COLOR = "Tool Bar Color";
     public static final String STATUS_BAR_COLOR = "Status Bar Color";
-    //public static final String VISIBLE_KEY = "visible";
 
     private int mStatusBarColor;
     private int mToolBarColor;
 
-    private EditText mEdtiText;
-    private CheckBox mCheckBox;
-    private Button mButtonBlue;
-    private Button mButtonRed;
-    private Button mButtonGreen;
     private Toolbar mToolBar;
     private ActionBar mActionBar;
 
-    private NavigationView mNavigationView;
+    public NavigationView mNavigationView;
     private DrawerLayout mNavigationDrawer;
 
     private Fragment mFragment;
@@ -65,22 +55,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mNavigationDrawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        }
 
-//        mEdtiText = (EditText) findViewById(R.id.editText2);
-
-//        mCheckBox = (CheckBox) findViewById(R.id.checkBox);
-//        mCheckBox.setOnClickListener(this);
-
-//        mButtonBlue = (Button) findViewById(R.id.btn_blue);
-//        mButtonBlue.setOnClickListener(this);
-//
-//        mButtonRed = (Button) findViewById(R.id.btn_red);
-//        mButtonRed.setOnClickListener(this);
-//
-//        mButtonGreen = (Button) findViewById(R.id.btn_green);
-//        mButtonGreen.setOnClickListener(this);
 
         mToolBar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -89,10 +67,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setupToolBar();
         setupDrawer();
 
-        if (savedInstanceState != null) {
-            //getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_container, mFragment).addToBackStack(null).commit();
-        } else {
-            getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_container, new ProfileFragment()).commit();
+        //задаем отступ тул бару на высоту статус бара
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mNavigationView.setPadding(0, getStatusBarHeight()/2, 0, 0);
+        }*/
+
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_frame_container, new ProfileFragment())
+                    .commit();
         }
     }
 
@@ -116,10 +100,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * Метод определяющий высоту статусбара
+     * @return
+     */
+    /*public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }*/
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            //Toast.makeText(this, "Click!", Toast.LENGTH_SHORT).show();
             mNavigationDrawer.openDrawer(GravityCompat.START);
         }
         return super.onOptionsItemSelected(item);
@@ -166,8 +162,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Lg.e(this.getLocalClassName(), "data was saved");
         outState.putInt(STATUS_BAR_COLOR, mStatusBarColor);
         outState.putInt(TOOL_BAR_COLOR, mToolBarColor);
-        //outState.putBoolean(VISIBLE_KEY, mEdtiText.getVisibility() == View.VISIBLE);
-
     }
 
 
@@ -180,8 +174,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mStatusBarColor = savedInstanceState.getInt(STATUS_BAR_COLOR);
             mToolBarColor = savedInstanceState.getInt(TOOL_BAR_COLOR);
             setThemeColor(mStatusBarColor, mToolBarColor);
-            // int visibleState = savedInstanceState.getBoolean(VISIBLE_KEY) ? View.VISIBLE : View.INVISIBLE;
-            // mEdtiText.setVisibility(visibleState);
         }
     }
 
@@ -189,14 +181,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.checkBox:
-                Toast.makeText(this, "Click!", Toast.LENGTH_SHORT).show();
-                if (mCheckBox.isChecked()) {
-                    mEdtiText.setVisibility(View.INVISIBLE);
-                } else {
-                    mEdtiText.setVisibility(View.VISIBLE);
-                }
-                break;
             case R.id.btn_blue:
                 mStatusBarColor = ContextCompat.getColor(this, R.color.color_status_bar_blue);
                 mToolBarColor = ContextCompat.getColor(this, R.color.color_tool_bar_blue);
@@ -235,32 +219,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public boolean onNavigationItemSelected(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.drawer_profile:
-                        mNavigationView.getMenu().findItem(R.id.drawer_profile).setChecked(true);
+                        //mNavigationView.getMenu().findItem(R.id.drawer_profile).setChecked(true);
                         mFragment = new ProfileFragment();
                         break;
                     case R.id.drawer_contacts:
-                        mNavigationView.getMenu().findItem(R.id.drawer_contacts).setChecked(true);
+                        //mNavigationView.getMenu().findItem(R.id.drawer_contacts).setChecked(true);
                         mFragment = new ContactsFragment();
                         break;
                     case R.id.drawer_team:
-                        mNavigationView.getMenu().findItem(R.id.drawer_team).setChecked(true);
+                        //mNavigationView.getMenu().findItem(R.id.drawer_team).setChecked(true);
                         mFragment = new TeamFragment();
                         break;
                     case R.id.drawer_tasks:
-                        mNavigationView.getMenu().findItem(R.id.drawer_tasks).setChecked(true);
+                        //mNavigationView.getMenu().findItem(R.id.drawer_tasks).setChecked(true);
                         mFragment = new TasksFragment();
                         break;
                     case R.id.drawer_settings:
-                        mNavigationView.getMenu().findItem(R.id.drawer_settings).setChecked(true);
+                        //mNavigationView.getMenu().findItem(R.id.drawer_settings).setChecked(true);
                         mFragment = new SettingFragment();
                         break;
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_container, mFragment).addToBackStack(mFragment.getClass().getName()).commit();
+                if (mFragment != null) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_container, mFragment).addToBackStack(mFragment.getClass().getName()).commit();
+                }
                 mNavigationDrawer.closeDrawers();
                 return false;
             }
         });
 
+    }
+    public void checkMenu(int id) {
+        mNavigationView.getMenu().findItem(id).setChecked(true);
     }
 }
 

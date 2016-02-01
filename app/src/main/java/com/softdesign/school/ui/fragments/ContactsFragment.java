@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.softdesign.school.R;
+import com.softdesign.school.ui.activities.MainActivity;
 
 /**
  * Created by Remapper on 28.01.2016.
@@ -20,8 +21,7 @@ public class ContactsFragment extends Fragment {
 
         View convertView = inflater.inflate(R.layout.fragment_contacts, null);
         getActivity().setTitle(R.string.drawer_contacts);
-
-
+        ((MainActivity)getActivity()).checkMenu(R.id.drawer_contacts);
         return convertView;
     }
 }
