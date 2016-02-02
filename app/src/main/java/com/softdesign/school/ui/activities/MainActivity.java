@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.softdesign.school.R;
 import com.softdesign.school.ui.fragments.ContactsFragment;
@@ -23,6 +24,8 @@ import com.softdesign.school.ui.fragments.SettingFragment;
 import com.softdesign.school.ui.fragments.TasksFragment;
 import com.softdesign.school.ui.fragments.TeamFragment;
 import com.softdesign.school.utils.Lg;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -37,11 +40,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Toolbar mToolBar;
     private ActionBar mActionBar;
 
-    public NavigationView mNavigationView;
+    private NavigationView mNavigationView;
     private DrawerLayout mNavigationDrawer;
 
     private Fragment mFragment;
     private FrameLayout mFrameContainer;
+
+    private View mHeaderLayout;
+    private TextView mRaitView;
+    private CircleImageView mCircleImageView;
 
 
     @Override
@@ -60,7 +67,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
 
+
+        //mHeaderLayout = mNavigationView.inflateHeaderView(R.layout.navigation_header);
+        mHeaderLayout = mNavigationView.getHeaderView(0);
+
+
         mToolBar = (Toolbar) findViewById(R.id.toolbar);
+        mRaitView = (TextView) mHeaderLayout.findViewById(R.id.rait_view);
+        mCircleImageView = (CircleImageView) mHeaderLayout.findViewById(R.id.profile_image);
+
+
+
+
+
+
+
+
+
 
 
         getNewToolBar();
@@ -68,10 +91,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setupDrawer();
 
         //задаем отступ тул бару на высоту статус бара
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mNavigationView.setPadding(0, getStatusBarHeight()/2, 0, 0);
-        }*/
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+           // mCircleImageView.set
+            //mRaitView.setPadding(0,0,0,0);
+            //mCircleImageView.setPadding(0,50,0,0);
+            mHeaderLayout.setPadding(0,48,0,0);
 
+
+        }
+
+        //mCircleImageView = (CircleImageView) findViewById(R.id.profile_image);
+
+        //Lg.e(this.getLocalClassName(), Integer.toString(mCircleImageView.getPaddingTop()));
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -104,14 +135,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * Метод определяющий высоту статусбара
      * @return
      */
-    /*public int getStatusBarHeight() {
+    public int getStatusBarHeight() {
         int result = 0;
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {
             result = getResources().getDimensionPixelSize(resourceId);
         }
         return result;
-    }*/
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
