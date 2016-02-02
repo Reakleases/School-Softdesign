@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -14,8 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import com.softdesign.school.R;
 import com.softdesign.school.ui.fragments.ContactsFragment;
@@ -25,10 +22,8 @@ import com.softdesign.school.ui.fragments.TasksFragment;
 import com.softdesign.school.ui.fragments.TeamFragment;
 import com.softdesign.school.utils.Lg;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
-
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
 
     public static final String TOOL_BAR_COLOR = "Tool Bar Color";
@@ -44,11 +39,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private DrawerLayout mNavigationDrawer;
 
     private Fragment mFragment;
-    private FrameLayout mFrameContainer;
-
-    private View mHeaderLayout;
-    private TextView mRaitView;
-    private CircleImageView mCircleImageView;
 
 
     @Override
@@ -62,47 +52,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mNavigationDrawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
 
+        //для обращения к элементам NavigationView
+        View mHeaderLayout = mNavigationView.getHeaderView(0);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         }
 
 
-
-        //mHeaderLayout = mNavigationView.inflateHeaderView(R.layout.navigation_header);
-        mHeaderLayout = mNavigationView.getHeaderView(0);
-
-
         mToolBar = (Toolbar) findViewById(R.id.toolbar);
-        mRaitView = (TextView) mHeaderLayout.findViewById(R.id.rait_view);
-        mCircleImageView = (CircleImageView) mHeaderLayout.findViewById(R.id.profile_image);
-
-
-
-
-
-
-
-
-
-
 
         getNewToolBar();
         setupToolBar();
         setupDrawer();
 
-        //задаем отступ тул бару на высоту статус бара
+        //задаем отступ в NavigationDrawer для того, чтобы элементы не уходили под StatuBar
+        //и не делаем отступ в версии андроида < 5.0
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-           // mCircleImageView.set
-            //mRaitView.setPadding(0,0,0,0);
-            //mCircleImageView.setPadding(0,50,0,0);
-            mHeaderLayout.setPadding(0,48,0,0);
-
-
+            mHeaderLayout.setPadding(0, getStatusBarHeight(), 0, 0);
         }
 
-        //mCircleImageView = (CircleImageView) findViewById(R.id.profile_image);
-
-        //Lg.e(this.getLocalClassName(), Integer.toString(mCircleImageView.getPaddingTop()));
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -133,7 +102,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * Метод определяющий высоту статусбара
-     * @return
+     *
+     * @return возвращает значние int
      */
     public int getStatusBarHeight() {
         int result = 0;
@@ -209,26 +179,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_blue:
-                mStatusBarColor = ContextCompat.getColor(this, R.color.color_status_bar_blue);
-                mToolBarColor = ContextCompat.getColor(this, R.color.color_tool_bar_blue);
-                setThemeColor(mStatusBarColor, mToolBarColor);
-                break;
-            case R.id.btn_red:
-                mStatusBarColor = ContextCompat.getColor(this, R.color.color_status_bar_red);
-                mToolBarColor = ContextCompat.getColor(this, R.color.color_tool_bar_red);
-                setThemeColor(mStatusBarColor, mToolBarColor);
-                break;
-            case R.id.btn_green:
-                mStatusBarColor = ContextCompat.getColor(this, R.color.color_status_bar_green);
-                mToolBarColor = ContextCompat.getColor(this, R.color.color_tool_bar_green);
-                setThemeColor(mStatusBarColor, mToolBarColor);
-                break;
-        }
-    }
 
     /**
      * Метод меняющий цвета Statusbar и Toolbar, на входе поулчает цвета:
@@ -279,6 +229,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
     }
+
     public void checkMenu(int id) {
         mNavigationView.getMenu().findItem(id).setChecked(true);
     }
