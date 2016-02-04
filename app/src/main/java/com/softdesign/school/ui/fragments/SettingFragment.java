@@ -21,7 +21,8 @@ public class SettingFragment extends Fragment {
 
         View convertView = inflater.inflate(R.layout.fragment_settings, null);
         getActivity().setTitle(R.string.drawer_settings);
-        ((MainActivity)getActivity()).checkMenu(R.id.drawer_settings);
+        ((MainActivity) getActivity()).checkMenu(R.id.drawer_settings);
+        ((MainActivity) getActivity()).collapseAppBar(true);
 
 
         return convertView;

@@ -3,9 +3,12 @@ package com.softdesign.school.ui.activities;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +43,11 @@ public class MainActivity extends AppCompatActivity {
 
     private Fragment mFragment;
 
+    public AppBarLayout mAppBar;
+
+    public AppBarLayout.LayoutParams params = null;
+    public CollapsingToolbarLayout mCollapsingToolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,18 +57,22 @@ public class MainActivity extends AppCompatActivity {
         setTitle("School custom bars");
         Lg.e(this.getLocalClassName(), "========================\non Create");
 
+        mToolBar = (Toolbar) findViewById(R.id.toolbar);
         mNavigationDrawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
+        mAppBar = (AppBarLayout) findViewById(R.id.app_bar_layout);
+        mCollapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
 
         //для обращения к элементам NavigationView
         View mHeaderLayout = mNavigationView.getHeaderView(0);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            //getWindow().setStatusBarColor(Color.BLACK);
         }
 
 
-        mToolBar = (Toolbar) findViewById(R.id.toolbar);
+
 
         getNewToolBar();
         setupToolBar();
@@ -81,16 +93,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Метод для инициализации своего кастомного тулбара
+     * Метод для инициализации своего кастомного ToolBar
      */
-    private void getNewToolBar() {
+    public void getNewToolBar() {
         setSupportActionBar(mToolBar);
         mActionBar = getSupportActionBar();
+        params = (AppBarLayout.LayoutParams) mCollapsingToolbar.getLayoutParams();
     }
 
 
     /**
-     * Метод настраивающий кастомный тулбар
+     * Метод настраивающий кастомный ToolBar
      * добавляет кнопку меню, и задает картинку
      */
     private void setupToolBar() {
@@ -101,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Метод определяющий высоту статусбара
+     * Метод определяющий высоту StatusBar
      *
      * @return возвращает значние int
      */
@@ -179,7 +192,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * Метод меняющий цвета Statusbar и Toolbar, на входе поулчает цвета:
      *
@@ -194,6 +206,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Инициализация NavigationDrawer
+     */
     private void setupDrawer() {
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -230,8 +245,53 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    /**
+     * Метод отмечающий элемент в меню
+     *
+     * @param id
+     */
     public void checkMenu(int id) {
         mNavigationView.getMenu().findItem(id).setChecked(true);
+    }
+
+    /**
+     * Сворачивает ToolBar
+     * @param collapse true - свернуть / false -  развернуть
+     */
+    public void collapseAppBar(boolean collapse) {
+        if (collapse) {
+            AppBarLayout.OnOffsetChangedListener mListener = new AppBarLayout.OnOffsetChangedListener() {
+                @Override
+                public void onOffsetChanged(AppBarLayout mAppBar, int verticalOffset) {
+                    if (mCollapsingToolbar.getHeight() + verticalOffset <= ViewCompat.getMinimumHeight(mCollapsingToolbar) + getStatusBarHeight()) {
+                        mAppBar.removeOnOffsetChangedListener(this);
+                        LockToolBar();
+                    }
+                }
+            };
+            mAppBar.addOnOffsetChangedListener(mListener);
+            //mAppBar.setExpanded(false);
+        } else {
+            UnLockToolBar();
+            mAppBar.setExpanded(true);
+        }
+    }
+
+    /**
+     * Снимает блокировку с ToolBar выставляя scrollFlag
+     */
+    private void LockToolBar() {
+        params.setScrollFlags(0);
+        mCollapsingToolbar.setLayoutParams(params);
+    }
+
+    /**
+     * Блокирует ToolBar выставляя scrollFlag
+     */
+    private void UnLockToolBar() {
+        params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
+        mCollapsingToolbar.setLayoutParams(params);
     }
 }
 

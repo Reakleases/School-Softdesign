@@ -21,7 +21,8 @@ public class TeamFragment extends Fragment {
 
         View convertView = inflater.inflate(R.layout.fragment_team, null);
         getActivity().setTitle(R.string.drawer_team);
-        ((MainActivity)getActivity()).checkMenu(R.id.drawer_team);
+        ((MainActivity) getActivity()).checkMenu(R.id.drawer_team);
+        ((MainActivity) getActivity()).collapseAppBar(true);
 
         return convertView;
     }

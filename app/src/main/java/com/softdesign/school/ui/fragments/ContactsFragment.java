@@ -21,7 +21,8 @@ public class ContactsFragment extends Fragment {
 
         View convertView = inflater.inflate(R.layout.fragment_contacts, null);
         getActivity().setTitle(R.string.drawer_contacts);
-        ((MainActivity)getActivity()).checkMenu(R.id.drawer_contacts);
+        ((MainActivity) getActivity()).checkMenu(R.id.drawer_contacts);
+        ((MainActivity) getActivity()).collapseAppBar(true);
         return convertView;
     }
 }
