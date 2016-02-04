@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 
 import com.softdesign.school.R;
 import com.softdesign.school.ui.fragments.ContactsFragment;
@@ -29,12 +28,6 @@ import com.softdesign.school.utils.Lg;
 public class MainActivity extends AppCompatActivity {
 
 
-    public static final String TOOL_BAR_COLOR = "Tool Bar Color";
-    public static final String STATUS_BAR_COLOR = "Status Bar Color";
-
-    private int mStatusBarColor;
-    private int mToolBarColor;
-
     private Toolbar mToolBar;
     private ActionBar mActionBar;
 
@@ -44,9 +37,9 @@ public class MainActivity extends AppCompatActivity {
     private Fragment mFragment;
 
     public AppBarLayout mAppBar;
-
-    public AppBarLayout.LayoutParams params = null;
     public CollapsingToolbarLayout mCollapsingToolbar;
+    public AppBarLayout.LayoutParams params = null;
+
 
 
     @Override
@@ -54,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setTitle("School custom bars");
+        //setTitle("School custom bars");
         Lg.e(this.getLocalClassName(), "========================\non Create");
 
         mToolBar = (Toolbar) findViewById(R.id.toolbar);
@@ -66,15 +59,15 @@ public class MainActivity extends AppCompatActivity {
         //для обращения к элементам NavigationView
         View mHeaderLayout = mNavigationView.getHeaderView(0);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             //getWindow().setStatusBarColor(Color.BLACK);
-        }
+        }*/
 
 
 
 
-        getNewToolBar();
+        //getNewToolBar();
         setupToolBar();
         setupDrawer();
 
@@ -95,7 +88,17 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Метод для инициализации своего кастомного ToolBar
      */
-    public void getNewToolBar() {
+    public void setupToolBar() {
+        setSupportActionBar(mToolBar);
+        ActionBar actionBar = getSupportActionBar();
+        params = (AppBarLayout.LayoutParams) mCollapsingToolbar.getLayoutParams();
+
+        if (actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+    /*public void getNewToolBar() {
         setSupportActionBar(mToolBar);
         mActionBar = getSupportActionBar();
         params = (AppBarLayout.LayoutParams) mCollapsingToolbar.getLayoutParams();
@@ -106,12 +109,12 @@ public class MainActivity extends AppCompatActivity {
      * Метод настраивающий кастомный ToolBar
      * добавляет кнопку меню, и задает картинку
      */
-    private void setupToolBar() {
+    /*private void setupToolBar() {
         if (mActionBar != null) {
             mActionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);  // задает иконку
             mActionBar.setDisplayHomeAsUpEnabled(true); //картинка с меню (обычно 3 полоски)
         }
-    }
+    }*/
 
     /**
      * Метод определяющий высоту StatusBar
@@ -174,8 +177,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Lg.e(this.getLocalClassName(), "data was saved");
-        outState.putInt(STATUS_BAR_COLOR, mStatusBarColor);
-        outState.putInt(TOOL_BAR_COLOR, mToolBarColor);
+        /*outState.putInt(STATUS_BAR_COLOR, mStatusBarColor);
+        outState.putInt(TOOL_BAR_COLOR, mToolBarColor);*/
     }
 
 
@@ -185,9 +188,9 @@ public class MainActivity extends AppCompatActivity {
         Lg.e(this.getLocalClassName(), "data was restored");
         //если есть информация в бандле, достаем и вызываем метод меняющий цвета баров
         if (savedInstanceState != null) {
-            mStatusBarColor = savedInstanceState.getInt(STATUS_BAR_COLOR);
+           /* mStatusBarColor = savedInstanceState.getInt(STATUS_BAR_COLOR);
             mToolBarColor = savedInstanceState.getInt(TOOL_BAR_COLOR);
-            setThemeColor(mStatusBarColor, mToolBarColor);
+            setThemeColor(mStatusBarColor, mToolBarColor);*/
         }
     }
 
@@ -257,6 +260,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Сворачивает ToolBar
+     *
      * @param collapse true - свернуть / false -  развернуть
      */
     public void collapseAppBar(boolean collapse) {
@@ -266,14 +270,14 @@ public class MainActivity extends AppCompatActivity {
                 public void onOffsetChanged(AppBarLayout mAppBar, int verticalOffset) {
                     if (mCollapsingToolbar.getHeight() + verticalOffset <= ViewCompat.getMinimumHeight(mCollapsingToolbar) + getStatusBarHeight()) {
                         mAppBar.removeOnOffsetChangedListener(this);
-                        LockToolBar();
+                        UnLockToolBar();
                     }
                 }
             };
             mAppBar.addOnOffsetChangedListener(mListener);
-            //mAppBar.setExpanded(false);
+            mAppBar.setExpanded(false);
         } else {
-            UnLockToolBar();
+            LockToolBar();
             mAppBar.setExpanded(true);
         }
     }

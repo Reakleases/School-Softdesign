@@ -22,7 +22,7 @@ public class ProfileFragment extends Fragment {
         View convertView = inflater.inflate(R.layout.fragment_profile, null);
         getActivity().setTitle(R.string.drawer_profile);
         ((MainActivity) getActivity()).checkMenu(R.id.drawer_profile);
-        ((MainActivity) getActivity()).collapseAppBar(true);
+        ((MainActivity) getActivity()).collapseAppBar(false);
 
 
         return convertView;

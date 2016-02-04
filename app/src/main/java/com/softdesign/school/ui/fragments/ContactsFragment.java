@@ -19,7 +19,7 @@ public class ContactsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View convertView = inflater.inflate(R.layout.fragment_contacts, null);
+        View convertView = inflater.inflate(R.layout.fragment_contacts, container, false);
         getActivity().setTitle(R.string.drawer_contacts);
         ((MainActivity) getActivity()).checkMenu(R.id.drawer_contacts);
         ((MainActivity) getActivity()).collapseAppBar(true);
