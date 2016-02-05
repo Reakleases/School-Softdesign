@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     public CollapsingToolbarLayout mCollapsingToolbar;
     public AppBarLayout.LayoutParams params = null;
 
+    private FloatingActionButton mFloatingActionButton;
+
 
 
     @Override
@@ -53,8 +56,9 @@ public class MainActivity extends AppCompatActivity {
         mToolBar = (Toolbar) findViewById(R.id.toolbar);
         mNavigationDrawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
-        mAppBar = (AppBarLayout) findViewById(R.id.app_bar_layout);
+        mAppBar = (AppBarLayout) findViewById(R.id.appbar_layout);
         mCollapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
 
         //для обращения к элементам NavigationView
         View mHeaderLayout = mNavigationView.getHeaderView(0);
@@ -67,8 +71,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        //getNewToolBar();
-        setupToolBar();
+        fabclick();
+        getNewToolbar();
+        setupToolbar();
         setupDrawer();
 
         //задаем отступ в NavigationDrawer для того, чтобы элементы не уходили под StatuBar
@@ -85,10 +90,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void fabclick() {
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                collapseAppBar(false);
+            }
+        });
+    }
+
     /**
      * Метод для инициализации своего кастомного ToolBar
      */
-    public void setupToolBar() {
+/*    public void setupToolbar() {
         setSupportActionBar(mToolBar);
         ActionBar actionBar = getSupportActionBar();
         params = (AppBarLayout.LayoutParams) mCollapsingToolbar.getLayoutParams();
@@ -97,8 +111,8 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-    }
-    /*public void getNewToolBar() {
+    }*/
+    public void getNewToolbar() {
         setSupportActionBar(mToolBar);
         mActionBar = getSupportActionBar();
         params = (AppBarLayout.LayoutParams) mCollapsingToolbar.getLayoutParams();
@@ -109,12 +123,12 @@ public class MainActivity extends AppCompatActivity {
      * Метод настраивающий кастомный ToolBar
      * добавляет кнопку меню, и задает картинку
      */
-    /*private void setupToolBar() {
+    private void setupToolbar() {
         if (mActionBar != null) {
             mActionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);  // задает иконку
             mActionBar.setDisplayHomeAsUpEnabled(true); //картинка с меню (обычно 3 полоски)
         }
-    }*/
+    }
 
     /**
      * Метод определяющий высоту StatusBar
@@ -270,14 +284,14 @@ public class MainActivity extends AppCompatActivity {
                 public void onOffsetChanged(AppBarLayout mAppBar, int verticalOffset) {
                     if (mCollapsingToolbar.getHeight() + verticalOffset <= ViewCompat.getMinimumHeight(mCollapsingToolbar) + getStatusBarHeight()) {
                         mAppBar.removeOnOffsetChangedListener(this);
-                        UnLockToolBar();
+                        LockToolBar();
                     }
                 }
             };
             mAppBar.addOnOffsetChangedListener(mListener);
             mAppBar.setExpanded(false);
         } else {
-            LockToolBar();
+            UnLockToolBar();
             mAppBar.setExpanded(true);
         }
     }
