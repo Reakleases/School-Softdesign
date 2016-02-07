@@ -1,6 +1,5 @@
 package com.softdesign.school.ui.activities;
 
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -60,6 +59,11 @@ public class MainActivity extends AppCompatActivity {
         mCollapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         mFloatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
 
+
+
+
+
+
         //для обращения к элементам NavigationView
         View mHeaderLayout = mNavigationView.getHeaderView(0);
 
@@ -71,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        fabclick();
+        fabClick();
         getNewToolbar();
         setupToolbar();
         setupDrawer();
@@ -83,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        //первый запуск
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_frame_container, new ProfileFragment())
@@ -90,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void fabclick() {
+    private void fabClick() {
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -215,12 +220,12 @@ public class MainActivity extends AppCompatActivity {
      * @param colorStatusBar цвет статусбара
      * @param colorToolBar   цвет тулбара
      */
-    private void setThemeColor(int colorStatusBar, int colorToolBar) {
+    /*private void setThemeColor(int colorStatusBar, int colorToolBar) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(colorStatusBar);
         }
         mActionBar.setBackgroundDrawable(new ColorDrawable(colorToolBar));
-    }
+    }*/
 
 
     /**
@@ -232,24 +237,19 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.drawer_profile:
-                        //mNavigationView.getMenu().findItem(R.id.drawer_profile).setChecked(true);
                         mFragment = new ProfileFragment();
                         break;
                     case R.id.drawer_contacts:
-                        //mNavigationView.getMenu().findItem(R.id.drawer_contacts).setChecked(true);
                         mFragment = new ContactsFragment();
                         break;
                     case R.id.drawer_team:
-                        //mNavigationView.getMenu().findItem(R.id.drawer_team).setChecked(true);
                         mFragment = new TeamFragment();
                         break;
                     case R.id.drawer_tasks:
-                        //mNavigationView.getMenu().findItem(R.id.drawer_tasks).setChecked(true);
                         mFragment = new TasksFragment();
                         break;
                     case R.id.drawer_settings:
-                        //mNavigationView.getMenu().findItem(R.id.drawer_settings).setChecked(true);
-                        mFragment = new SettingFragment();
+                       mFragment = new SettingFragment();
                         break;
                 }
                 if (mFragment != null) {

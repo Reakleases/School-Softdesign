@@ -17,5 +17,15 @@
     <!-- Collapsing Toolbar -->
     <dimen name="collapsing_bg_img_height">256dp</dimen>
 
+    <!-- font sizes -->
+    <dimen name="font_larger">20sp</dimen>
+    <dimen name="font_large">16sp</dimen>
+    <dimen name="font_normal">14sp</dimen>
+    <dimen name="font_small">12sp</dimen>
+
+    <!-- Height -->
+    <dimen name="list_item">72dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
+
 
 </resources>

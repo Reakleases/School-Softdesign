@@ -16,6 +16,7 @@
     <!-- Fonts -->
     <string name="roboto.regular">sans-serif</string>
     <string name="roboto.medium">sans-serif-medium</string>
+    <string name="roboto.large">sans-serif-large</string>
 
     <!-- Fragments text -->
     <string name="fragment_text.profile">Здесь будет профиль</string>
