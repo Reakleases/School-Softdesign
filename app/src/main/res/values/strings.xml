@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">School</string>
+
+    <!-- NavigationView -->
+    <string name="drawer.profile">Профиль</string>
+    <string name="drawer.contacts">Контакты</string>
+    <string name="drawer.tasks">Задачи</string>
+    <string name="drawer.team">Команда</string>
+    <string name="drawer.settings">Настройки</string>
+
+    <!-- NavigationHeader -->
+    <string name="header_text.user">Амир Коновалов</string>
+    <string name="header_text.rait">100</string>
+    <string name="header_text.email">Reaklease@gmail.com</string>
+
+    <!-- Fonts -->
+    <string name="roboto.regular">sans-serif</string>
+    <string name="roboto.medium">sans-serif-medium</string>
+
+    <!-- Fragments text -->
+    <string name="fragment_text.profile">Здесь будет профиль</string>
+    <string name="fragment_text.contacts">Здесь будут контакты</string>
+    <string name="fragment_text.tasks">Здесь будут задачи</string>
+    <string name="fragment_text.team">Здесь будет команда</string>
+    <string name="fragment_text.settings">Здесь будут настройки</string>
+
+
 </resources>

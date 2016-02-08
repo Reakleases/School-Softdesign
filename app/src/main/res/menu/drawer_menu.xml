@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/drawer_profile"
+            android:checked="true"
+            android:title="@string/drawer.profile"
+            android:icon="@drawable/ic_account_circle_black_24dp">
+        </item>
+        <item
+            android:id="@+id/drawer_contacts"
+            android:title="@string/drawer.contacts"
+            android:icon="@drawable/ic_people_black_24dp">
+        </item>
+        <item
+            android:id="@+id/drawer_team"
+            android:title="@string/drawer.team"
+            android:icon="@drawable/ic_group_work_black_24dp">
+        </item>
+        <item
+            android:id="@+id/drawer_tasks"
+            android:title="@string/drawer.tasks"
+            android:icon="@drawable/ic_assignment_black_24dp">
+        </item>
+        <item
+            android:id="@+id/drawer_settings"
+            android:title="@string/drawer.settings"
+            android:icon="@drawable/ic_settings_black_24dp">
+        </item>
+    </group>
+
+</menu>
