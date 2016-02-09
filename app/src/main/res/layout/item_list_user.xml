@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="блаблаблаблабла"
         android:layout_marginLeft="@dimen/spacing_normal"
-        android:textColor="@color/text_color"
+        android:textColor="@color/text_color_black"
         android:textSize="@dimen/font_large"
         android:fontFamily="@string/roboto.regular"
         android:layout_gravity="left|center_vertical" />
