@@ -11,5 +11,5 @@
         android:layout_gravity="center_horizontal"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:textSize="24dp" />
+        android:textSize="24sp" />
 </RelativeLayout>

@@ -24,10 +24,11 @@ import java.util.ArrayList;
 
 public class ContactsFragment extends Fragment {
 
-    ArrayList<User> mUsers = new ArrayList<User>();
+
+    ArrayList<User> mUsers = new ArrayList<>();
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
     RecyclerView listContacts;
+    View mainView;
 
     @Override
     public void onAttach(Context context) {
@@ -41,28 +42,34 @@ public class ContactsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View convertView = inflater.inflate(R.layout.fragment_contacts, container, false);
-        getActivity().setTitle(R.string.drawer_contacts);
+        if (mainView == null) {
+            mainView = inflater.inflate(R.layout.fragment_contacts, container, false);
+        }
+
         ((MainActivity) getActivity()).checkMenu(R.id.drawer_contacts);
         ((MainActivity) getActivity()).collapseAppBar(true);
-        listContacts = (RecyclerView) convertView.findViewById(R.id.users_list);
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        listContacts.setLayoutManager(mLayoutManager);
+        getActivity().setTitle(R.string.drawer_contacts);
 
-        return convertView;
+        listContacts = (RecyclerView) mainView.findViewById(R.id.users_list);
+        listContacts.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        listContacts.setLayoutManager(mLayoutManager);
+        listContacts.setAdapter(mAdapter);
+
+        return mainView;
     }
 
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        listContacts.setAdapter(mAdapter);
+
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
         params.setAnchorId(R.id.coordinator_container);
-        params.anchorGravity = Gravity.BOTTOM | Gravity.RIGHT;
+        params.anchorGravity = Gravity.BOTTOM | Gravity.END;
         fab.setLayoutParams(params);
-        fab.setImageResource(R.drawable.ic_add_black);
+        fab.setImageResource(R.drawable.ic_add);
         fab.show();
 
 
@@ -125,4 +132,7 @@ public class ContactsFragment extends Fragment {
         mUsers.add(new User(ContextCompat.getDrawable(getActivity(), R.drawable.ic_account_circle_24dp), "Инга", "Инжир"));
         mUsers.add(new User(ContextCompat.getDrawable(getActivity(), R.drawable.ic_account_circle_24dp), "Анна", "Пожидаева"));
     }
+
+
+
 }
