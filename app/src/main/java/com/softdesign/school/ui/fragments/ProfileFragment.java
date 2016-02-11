@@ -47,17 +47,6 @@ public class ProfileFragment extends Fragment {
         params.anchorGravity = Gravity.BOTTOM | Gravity.END; //выставляем anchorGravity
         fab.setLayoutParams(params);
         fab.setImageResource(R.drawable.ic_create_24dp); // меняем иконку fab
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {                     //создаем и вешаем новый обработчик на fab
-                /*if (sCurrentFunctionality.equals(FUNCTIONALITY_PROFILE_VIEW)) {  //выбираем действие для fab в зависимости от текущего режима
-                    setupFuncionality(FUNCTIONALITY_PROFILE_EDIT);
-                } else {
-                    setupFuncionality(FUNCTIONALITY_PROFILE_VIEW);
-                }*/
-                ((MainActivity) getActivity()).collapseAppBar(true);
-            }
-        });
     }
 
 

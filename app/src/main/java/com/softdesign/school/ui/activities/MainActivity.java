@@ -77,9 +77,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         fabClick();
+
         getNewToolbar();
         setupToolbar();
         setupDrawer();
+
+
 
 
 
@@ -107,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Lg.e("fab CLICK", String.valueOf(mCollapsingToolbar.getHeight()));
 
                 mCollapsingToolbar.setTitle(getResources().getString(R.string.drawer_profile));
                 AppBarLayout.OnOffsetChangedListener mListener = new AppBarLayout.OnOffsetChangedListener() {
@@ -114,15 +118,15 @@ public class MainActivity extends AppCompatActivity {
                     public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
                         if (offset == 0) {
                             // Collapsed
-                            Lg.e("fab collapse true", String.valueOf(mToolBar.getHeight())+String.valueOf(offset));
+                            Lg.e("fab collapse true", String.valueOf(mCollapsingToolbar.getHeight())+String.valueOf(offset));
                             mAppBar.setExpanded(true);
-                            Lg.e("fab collapse true after", String.valueOf(mToolBar.getHeight()));
+                            Lg.e("fab collapse true after", String.valueOf(mCollapsingToolbar.getHeight()));
 
                         } else {
                             // Not collapsed
-                            Lg.e("fab collapse false", String.valueOf(mToolBar.getHeight()));
+                            Lg.e("fab collapse false", String.valueOf(mCollapsingToolbar.getHeight()));
                             mAppBar.setExpanded(false);
-                            Lg.e("fab collapse false after", String.valueOf(mToolBar.getHeight()));
+                            Lg.e("fab collapse false after", String.valueOf(mCollapsingToolbar.getHeight()));
                         }
                     }
                 };
@@ -335,8 +339,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             mAppBar.setExpanded(true);
             BlockToolbar.setDrag(true, mAppBar);
-        }
     }
+}
     public void collapseAppBar(boolean collapse) {
         Lg.e("collapse collapseAppBar started", String.valueOf(mCollapsingToolbar.getHeight()));
         if (collapse) {

@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/list_item">
+    style="@style/list_item"
+    android:orientation="vertical">
     <ImageView
         android:id="@+id/user_avatar"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="#ff0000"
-        android:layout_gravity="start|center_vertical" />
+        android:layout_gravity="start|center_vertical"
+        android:gravity="center"
+        />
 
     <TextView
         android:id="@+id/user_full_name"
