@@ -12,9 +12,11 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.softdesign.school.R;
 import com.softdesign.school.ui.fragments.ContactsFragment;
@@ -22,6 +24,7 @@ import com.softdesign.school.ui.fragments.ProfileFragment;
 import com.softdesign.school.ui.fragments.SettingFragment;
 import com.softdesign.school.ui.fragments.TasksFragment;
 import com.softdesign.school.ui.fragments.TeamFragment;
+import com.softdesign.school.utils.BlockToolbar;
 import com.softdesign.school.utils.Lg;
 
 
@@ -41,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
     public AppBarLayout.LayoutParams params = null;
 
     private FloatingActionButton mFloatingActionButton;
-
+    private Boolean click = true;
+    private TextView test;
 
 
     @Override
@@ -49,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //setTitle("School custom bars");
         Lg.e(this.getLocalClassName(), "========================\non Create");
 
         mToolBar = (Toolbar) findViewById(R.id.toolbar);
@@ -59,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         mCollapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         mFloatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
 
-
+        mCollapsingToolbar.setTitle(getResources().getString(R.string.fragment_profile_title));
 
 
 
@@ -73,12 +76,12 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
 
-
-
         fabClick();
         getNewToolbar();
         setupToolbar();
         setupDrawer();
+
+
 
         //задаем отступ в NavigationDrawer для того, чтобы элементы не уходили под StatuBar
         //и не делаем отступ в версии андроида < 5.0
@@ -96,10 +99,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fabClick() {
+
+
+        //AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
+
+
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                collapseAppBar(false);
+
+                mCollapsingToolbar.setTitle(getResources().getString(R.string.drawer_profile));
+                AppBarLayout.OnOffsetChangedListener mListener = new AppBarLayout.OnOffsetChangedListener() {
+                    @Override
+                    public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
+                        if (offset == 0) {
+                            // Collapsed
+                            Lg.e("fab collapse true", String.valueOf(mToolBar.getHeight())+String.valueOf(offset));
+                            mAppBar.setExpanded(true);
+                            Lg.e("fab collapse true after", String.valueOf(mToolBar.getHeight()));
+
+                        } else {
+                            // Not collapsed
+                            Lg.e("fab collapse false", String.valueOf(mToolBar.getHeight()));
+                            mAppBar.setExpanded(false);
+                            Lg.e("fab collapse false after", String.valueOf(mToolBar.getHeight()));
+                        }
+                    }
+                };
+
             }
         });
     }
@@ -130,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupToolbar() {
         if (mActionBar != null) {
-            mActionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);  // задает иконку
+            mActionBar.setHomeAsUpIndicator(R.drawable.ic_menu_24dp);  // задает иконку
             mActionBar.setDisplayHomeAsUpEnabled(true); //картинка с меню (обычно 3 полоски)
         }
     }
@@ -249,11 +276,14 @@ public class MainActivity extends AppCompatActivity {
                         mFragment = new TasksFragment();
                         break;
                     case R.id.drawer_settings:
-                       mFragment = new SettingFragment();
+                        mFragment = new SettingFragment();
                         break;
                 }
                 if (mFragment != null) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_container, mFragment).addToBackStack(mFragment.getClass().getName()).commit();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_frame_container, mFragment)
+                            .addToBackStack(mFragment.getClass().getName())
+                            .commit();
                 }
                 mNavigationDrawer.closeDrawers();
                 return false;
@@ -277,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param collapse true - свернуть / false -  развернуть
      */
-    public void collapseAppBar(boolean collapse) {
+    public void collapseAppBarQ(boolean collapse) {
         if (collapse) {
             AppBarLayout.OnOffsetChangedListener mListener = new AppBarLayout.OnOffsetChangedListener() {
                 @Override
@@ -295,6 +325,58 @@ public class MainActivity extends AppCompatActivity {
             mAppBar.setExpanded(true);
         }
     }
+    public void collapseAppBar(boolean collapse, RecyclerView recyclerView) {
+        if (collapse) {
+
+            mAppBar.setExpanded(false);
+            recyclerView.setNestedScrollingEnabled(false);
+            BlockToolbar.setDrag(false,mAppBar);
+
+        } else {
+            mAppBar.setExpanded(true);
+            BlockToolbar.setDrag(true, mAppBar);
+        }
+    }
+    public void collapseAppBar(boolean collapse) {
+        Lg.e("collapse collapseAppBar started", String.valueOf(mCollapsingToolbar.getHeight()));
+        if (collapse) {
+
+            Lg.e("void collapse true", String.valueOf(mCollapsingToolbar.getHeight()));
+            mAppBar.setExpanded(false);
+            BlockToolbar.setDrag(false,mAppBar);
+            Lg.e("void collapse true after", String.valueOf(mCollapsingToolbar.getHeight()));
+
+        } else {
+            Lg.e("void collapse false", String.valueOf(mCollapsingToolbar.getHeight()));
+            mAppBar.setExpanded(true);
+            BlockToolbar.setDrag(true, mAppBar);
+            Lg.e("void collapse false after", String.valueOf(mCollapsingToolbar.getHeight()));
+        }
+    }
+
+    public void collapseAppBarQQ(boolean collapse) {
+        if (collapse) {
+            Lg.e("collapse true", String.valueOf(mToolBar.getHeight()));
+            mAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+                @Override
+                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                    if(verticalOffset == 0 || verticalOffset <= mToolBar.getHeight()){
+                        mAppBar.setExpanded(false);
+                        BlockToolbar.setDrag(false,mAppBar);
+                        Lg.e("onOffsetChanged", String.valueOf(mToolBar.getHeight()));
+                    }
+
+                }
+            });
+
+        } else {
+            mAppBar.setExpanded(true);
+            BlockToolbar.setDrag(true, mAppBar);
+            Lg.e("collapse else", String.valueOf(mToolBar.getHeight()));
+        }
+    }
+
+
 
     /**
      * Снимает блокировку с ToolBar выставляя scrollFlag
@@ -311,5 +393,7 @@ public class MainActivity extends AppCompatActivity {
         params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
         mCollapsingToolbar.setLayoutParams(params);
     }
+
+
 }
 

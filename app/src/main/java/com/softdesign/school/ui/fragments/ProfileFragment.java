@@ -26,8 +26,8 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View convertView = inflater.inflate(R.layout.fragment_profile, null);
-        getActivity().setTitle(R.string.fragment_profile_title);
-        ((MainActivity) getActivity()).checkMenu(R.id.drawer_profile);
+        //getActivity().setTitle(R.string.fragment_profile_title);
+        //((MainActivity) getActivity()).checkMenu(R.id.drawer_profile);
         ((MainActivity) getActivity()).collapseAppBar(false);
 
 
@@ -37,21 +37,25 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        ((MainActivity) getActivity()).checkMenu(R.id.drawer_profile);
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab); //инициализируем fab из активити
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) fab.getLayoutParams(); // получаем параметры Layout fab приведенные к родителю
-        params.setAnchorId(R.id.appbar_layout); //выставляем привязку якоря к appBarLayout
+
+        //params.setAnchorId(R.id.appbar_layout); //выставляем привязку якоря к appBarLayout
+        params.setAnchorId(R.id.coordinator_container); //выставляем привязку якоря к appBarLayout
+
         params.anchorGravity = Gravity.BOTTOM | Gravity.END; //выставляем anchorGravity
         fab.setLayoutParams(params);
         fab.setImageResource(R.drawable.ic_create_24dp); // меняем иконку fab
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {                     //создаем и вешаем новый обработчик на fab
-                if (sCurrentFunctionality.equals(FUNCTIONALITY_PROFILE_VIEW)) {  //выбираем действие для fab в зависимости от текущего режима
+                /*if (sCurrentFunctionality.equals(FUNCTIONALITY_PROFILE_VIEW)) {  //выбираем действие для fab в зависимости от текущего режима
                     setupFuncionality(FUNCTIONALITY_PROFILE_EDIT);
                 } else {
                     setupFuncionality(FUNCTIONALITY_PROFILE_VIEW);
-                }
+                }*/
+                ((MainActivity) getActivity()).collapseAppBar(true);
             }
         });
     }

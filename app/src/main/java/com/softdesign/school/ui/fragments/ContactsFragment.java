@@ -30,6 +30,8 @@ public class ContactsFragment extends Fragment {
     RecyclerView listContacts;
     View mainView;
 
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -46,8 +48,14 @@ public class ContactsFragment extends Fragment {
             mainView = inflater.inflate(R.layout.fragment_contacts, container, false);
         }
 
-        ((MainActivity) getActivity()).checkMenu(R.id.drawer_contacts);
-        ((MainActivity) getActivity()).collapseAppBar(true);
+
+
+
+
+
+
+
+
         getActivity().setTitle(R.string.drawer_contacts);
 
         listContacts = (RecyclerView) mainView.findViewById(R.id.users_list);
@@ -55,15 +63,18 @@ public class ContactsFragment extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         listContacts.setLayoutManager(mLayoutManager);
         listContacts.setAdapter(mAdapter);
+        ((MainActivity) getActivity()).collapseAppBar(true);
+        listContacts.setNestedScrollingEnabled(false);
 
         return mainView;
     }
 
 
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        ((MainActivity) getActivity()).checkMenu(R.id.drawer_contacts);
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
         params.setAnchorId(R.id.coordinator_container);
@@ -71,7 +82,6 @@ public class ContactsFragment extends Fragment {
         fab.setLayoutParams(params);
         fab.setImageResource(R.drawable.ic_add);
         fab.show();
-
 
     }
 
