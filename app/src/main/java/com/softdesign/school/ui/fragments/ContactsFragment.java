@@ -63,8 +63,8 @@ public class ContactsFragment extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         listContacts.setLayoutManager(mLayoutManager);
         listContacts.setAdapter(mAdapter);
-        ((MainActivity) getActivity()).collapseAppBar(true);
-        listContacts.setNestedScrollingEnabled(false);
+        ((MainActivity) getActivity()).collapseAppBarQ(true);
+        //listContacts.setNestedScrollingEnabled(false);
 
         return mainView;
     }

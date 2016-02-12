@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.softdesign.school.R;
@@ -65,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
         mCollapsingToolbar.setTitle(getResources().getString(R.string.fragment_profile_title));
 
 
-
-
         //для обращения к элементам NavigationView
         View mHeaderLayout = mNavigationView.getHeaderView(0);
 
@@ -81,9 +80,6 @@ public class MainActivity extends AppCompatActivity {
         getNewToolbar();
         setupToolbar();
         setupDrawer();
-
-
-
 
 
         //задаем отступ в NavigationDrawer для того, чтобы элементы не уходили под StatuBar
@@ -110,26 +106,47 @@ public class MainActivity extends AppCompatActivity {
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Lg.e("fab CLICK", String.valueOf(mCollapsingToolbar.getHeight()));
 
-                mCollapsingToolbar.setTitle(getResources().getString(R.string.drawer_profile));
-                AppBarLayout.OnOffsetChangedListener mListener = new AppBarLayout.OnOffsetChangedListener() {
-                    @Override
-                    public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
-                        if (offset == 0) {
-                            // Collapsed
-                            Lg.e("fab collapse true", String.valueOf(mCollapsingToolbar.getHeight())+String.valueOf(offset));
-                            mAppBar.setExpanded(true);
-                            Lg.e("fab collapse true after", String.valueOf(mCollapsingToolbar.getHeight()));
 
-                        } else {
-                            // Not collapsed
-                            Lg.e("fab collapse false", String.valueOf(mCollapsingToolbar.getHeight()));
-                            mAppBar.setExpanded(false);
-                            Lg.e("fab collapse false after", String.valueOf(mCollapsingToolbar.getHeight()));
-                        }
-                    }
-                };
+                ImageView img = (ImageView) findViewById(R.id.me_img);
+
+
+                //CoordinatorLayout CoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_container);
+                //AppBarLayout AppBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
+
+
+                CollapsingToolbarLayout.LayoutParams paramsToolbar = (CollapsingToolbarLayout.LayoutParams) mToolBar.getLayoutParams();
+                //CollapsingToolbarLayout.LayoutParams paramsCollapse = (CollapsingToolbarLayout.LayoutParams) mCollapsingToolbar.getLayoutParams();
+                //CollapsingToolbarLayout.LayoutParams paramsCollapsingToolbarLayout = (CollapsingToolbarLayout.LayoutParams)mCollapsingToolbar.getLayoutParams();
+                //CollapsingToolbarLayout.LayoutParams paramsCollapsingToolbarLayout = (CollapsingToolbarLayout.LayoutParams)mCollapsingToolbar.getLayoutParams();
+                //CollapsingToolbarLayout.LayoutParams paramsCollapsingToolbarLayout = (CollapsingToolbarLayout.LayoutParams)mCollapsingToolbar.getLayoutParams();
+                //CoordinatorLayout.LayoutParams paramsCoordinatorLayout = (CoordinatorLayout.LayoutParams) CoordinatorLayout.getLayoutParams();
+
+
+                Lg.e("fab CLICK mCollapsingToolbar", String.valueOf(mCollapsingToolbar.getHeight()));
+                Lg.e("fab CLICK mToolBar", String.valueOf(mToolBar.getHeight()));
+                //Lg.e("fab CLICK CoordinatorLayout", String.valueOf(CoordinatorLayout.getHeight()));
+                //Lg.e("fab CLICK AppBarLayout", String.valueOf(AppBarLayout.getHeight()));
+
+                 //Lg.e("fab CLICK paramsCollapsingToolbarLayout", String.valueOf(paramsCollapse.height));
+                 Lg.e("fab CLICK paramsToolbar", String.valueOf(paramsToolbar.height));
+                paramsToolbar.height = 300;
+                Lg.e("fab CLICK mToolBar", String.valueOf(mToolBar.getHeight()));
+                Lg.e("fab CLICK paramsToolbar", String.valueOf(paramsToolbar.height));
+                Lg.e("fab CLICK paramsToolbar", String.valueOf(paramsToolbar.height));
+                 //Lg.e("fab CLICK paramsCoordinatorLayout", String.valueOf(paramsCoordinatorLayout.height));
+
+
+
+                //
+
+               // params.height = 42;
+                //mToolBar.setLayoutParams(params);
+                //mToolBar.requestLayout();
+
+
+               // Lg.e("fab CLICK", String.valueOf(params.height));
+
 
             }
         });
@@ -317,44 +334,79 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onOffsetChanged(AppBarLayout mAppBar, int verticalOffset) {
                     if (mCollapsingToolbar.getHeight() + verticalOffset <= ViewCompat.getMinimumHeight(mCollapsingToolbar) + getStatusBarHeight()) {
+                        Lg.e("collapse Q tag", String.valueOf(mCollapsingToolbar.getHeight() + verticalOffset) + " + "
+                                + String.valueOf(ViewCompat.getMinimumHeight(mCollapsingToolbar)) + String.valueOf(getStatusBarHeight()) +
+                                " + " + String.valueOf(mCollapsingToolbar.getHeight()));
                         mAppBar.removeOnOffsetChangedListener(this);
                         LockToolBar();
                     }
                 }
             };
+            Lg.e("collapse Q tag", "true");
             mAppBar.addOnOffsetChangedListener(mListener);
             mAppBar.setExpanded(false);
         } else {
+            Lg.e("collapse Q tag", "false");
             UnLockToolBar();
             mAppBar.setExpanded(true);
         }
     }
+
+
     public void collapseAppBar(boolean collapse, RecyclerView recyclerView) {
         if (collapse) {
+            Lg.e("collapse 2 params started", String.valueOf(mCollapsingToolbar.getHeight()));
 
-            mAppBar.setExpanded(false);
-            recyclerView.setNestedScrollingEnabled(false);
-            BlockToolbar.setDrag(false,mAppBar);
+            if (collapse) {
+                AppBarLayout.OnOffsetChangedListener mListener = new AppBarLayout.OnOffsetChangedListener() {
+                    @Override
+                    public void onOffsetChanged(AppBarLayout mAppBar, int verticalOffset) {
+                        if (mCollapsingToolbar.getHeight() + verticalOffset <= ViewCompat.getMinimumHeight(mCollapsingToolbar) + getStatusBarHeight()) {
+                            Lg.e("collapse Q tag", String.valueOf(verticalOffset));
+                            mAppBar.removeOnOffsetChangedListener(this);
+                            LockToolBar();
+                        }
+                    }
+                };
 
-        } else {
-            mAppBar.setExpanded(true);
-            BlockToolbar.setDrag(true, mAppBar);
+
+                LockToolBar();
+                mAppBar.setExpanded(false);
+                recyclerView.setNestedScrollingEnabled(false);
+                BlockToolbar.setDrag(false,mAppBar);
+
+            } else {
+                //UnLockToolBar();
+                mAppBar.setExpanded(true);
+                BlockToolbar.setDrag(true, mAppBar);
+            }
+        }
     }
-}
+
     public void collapseAppBar(boolean collapse) {
-        Lg.e("collapse collapseAppBar started", String.valueOf(mCollapsingToolbar.getHeight()));
+        Lg.e("collapse only boolean started", String.valueOf(mCollapsingToolbar.getHeight()));
         if (collapse) {
+            AppBarLayout.OnOffsetChangedListener mListener = new AppBarLayout.OnOffsetChangedListener() {
+                @Override
+                public void onOffsetChanged(AppBarLayout mAppBar, int verticalOffset) {
+                    if (mCollapsingToolbar.getHeight() + verticalOffset <= ViewCompat.getMinimumHeight(mCollapsingToolbar) + getStatusBarHeight()) {
+                        Lg.e("collapse Q tag", String.valueOf(verticalOffset));
+                        mAppBar.removeOnOffsetChangedListener(this);
+                        //LockToolBar();
+                    }
+                }
+            };
 
             Lg.e("void collapse true", String.valueOf(mCollapsingToolbar.getHeight()));
+            mAppBar.addOnOffsetChangedListener(mListener);
             mAppBar.setExpanded(false);
-            BlockToolbar.setDrag(false,mAppBar);
-            Lg.e("void collapse true after", String.valueOf(mCollapsingToolbar.getHeight()));
+            //BlockToolbar.setDrag(false,mAppBar);
 
         } else {
             Lg.e("void collapse false", String.valueOf(mCollapsingToolbar.getHeight()));
             mAppBar.setExpanded(true);
-            BlockToolbar.setDrag(true, mAppBar);
-            Lg.e("void collapse false after", String.valueOf(mCollapsingToolbar.getHeight()));
+            //BlockToolbar.setDrag(true, mAppBar);
+
         }
     }
 
@@ -364,9 +416,9 @@ public class MainActivity extends AppCompatActivity {
             mAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
                 @Override
                 public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                    if(verticalOffset == 0 || verticalOffset <= mToolBar.getHeight()){
+                    if (verticalOffset == 0 || verticalOffset <= mToolBar.getHeight()) {
                         mAppBar.setExpanded(false);
-                        BlockToolbar.setDrag(false,mAppBar);
+                        BlockToolbar.setDrag(false, mAppBar);
                         Lg.e("onOffsetChanged", String.valueOf(mToolBar.getHeight()));
                     }
 
@@ -381,12 +433,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * Снимает блокировку с ToolBar выставляя scrollFlag
      */
     private void LockToolBar() {
         params.setScrollFlags(0);
+
         mCollapsingToolbar.setLayoutParams(params);
     }
 

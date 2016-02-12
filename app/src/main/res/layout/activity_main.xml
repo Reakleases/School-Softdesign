@@ -31,6 +31,7 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
                 <ImageView
+                    android:id="@+id/me_img"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/collapsing_bg_img_height"
                     android:fitsSystemWindows="true"
