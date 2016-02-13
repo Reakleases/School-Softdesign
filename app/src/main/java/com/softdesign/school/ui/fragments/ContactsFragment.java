@@ -18,6 +18,7 @@ import com.softdesign.school.R;
 import com.softdesign.school.data.storage.models.User;
 import com.softdesign.school.ui.activities.MainActivity;
 import com.softdesign.school.ui.adapters.ContactAdapter;
+import com.softdesign.school.utils.Lg;
 
 import java.util.ArrayList;
 
@@ -46,6 +47,7 @@ public class ContactsFragment extends Fragment {
 
         if (mainView == null) {
             mainView = inflater.inflate(R.layout.fragment_contacts, container, false);
+            Lg.e("Contact fragment", "inflating new fragment");
         }
 
 
@@ -63,8 +65,9 @@ public class ContactsFragment extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         listContacts.setLayoutManager(mLayoutManager);
         listContacts.setAdapter(mAdapter);
-        ((MainActivity) getActivity()).collapseAppBarQ(true);
-        //listContacts.setNestedScrollingEnabled(false);
+        ((MainActivity) getActivity()).collapseAppBar(true);
+
+
 
         return mainView;
     }

@@ -10,7 +10,7 @@
 
     <!-- NavigationHeader -->
     <string name="header_text.user">Амир Коновалов</string>
-    <string name="header_text.rait">100</string>
+    <string name="header_text.rait">99</string>
     <string name="header_text.email">Reaklease@gmail.com</string>
 
     <!-- Fonts -->
@@ -29,7 +29,7 @@
     <!-- copypasted -->
 
     <!-- Strings-->
-    <string name="fragment.profile.phone.value">8 (917) 826–58–76</string>
+    <string name="fragment.profile.phone.value">8 (917) 826-58-76</string>
     <string name="fragment.profile.phone.label.mobile">Мобильный</string>
     <string name="fragment.profile.title">Коновалов Амир</string>
     <string name="fragment.contacts.description">Тут будут контакты</string>

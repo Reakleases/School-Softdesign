@@ -12,12 +12,9 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.softdesign.school.R;
 import com.softdesign.school.ui.fragments.ContactsFragment;
@@ -34,19 +31,14 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar mToolBar;
     private ActionBar mActionBar;
-
     private NavigationView mNavigationView;
     private DrawerLayout mNavigationDrawer;
-
     private Fragment mFragment;
+    private FloatingActionButton mFloatingActionButton;
 
     public AppBarLayout mAppBar;
     public CollapsingToolbarLayout mCollapsingToolbar;
     public AppBarLayout.LayoutParams params = null;
-
-    private FloatingActionButton mFloatingActionButton;
-    private Boolean click = true;
-    private TextView test;
 
 
     @Override
@@ -62,21 +54,12 @@ public class MainActivity extends AppCompatActivity {
         mAppBar = (AppBarLayout) findViewById(R.id.appbar_layout);
         mCollapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         mFloatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
-
         mCollapsingToolbar.setTitle(getResources().getString(R.string.fragment_profile_title));
-
 
         //для обращения к элементам NavigationView
         View mHeaderLayout = mNavigationView.getHeaderView(0);
 
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            //getWindow().setStatusBarColor(Color.BLACK);
-        }*/
-
-
         fabClick();
-
         getNewToolbar();
         setupToolbar();
         setupDrawer();
@@ -97,74 +80,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void fabClick() {
-
-
-        //AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
-
 
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
-                ImageView img = (ImageView) findViewById(R.id.me_img);
-
-
-                //CoordinatorLayout CoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_container);
-                //AppBarLayout AppBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
-
-
-                CollapsingToolbarLayout.LayoutParams paramsToolbar = (CollapsingToolbarLayout.LayoutParams) mToolBar.getLayoutParams();
-                //CollapsingToolbarLayout.LayoutParams paramsCollapse = (CollapsingToolbarLayout.LayoutParams) mCollapsingToolbar.getLayoutParams();
-                //CollapsingToolbarLayout.LayoutParams paramsCollapsingToolbarLayout = (CollapsingToolbarLayout.LayoutParams)mCollapsingToolbar.getLayoutParams();
-                //CollapsingToolbarLayout.LayoutParams paramsCollapsingToolbarLayout = (CollapsingToolbarLayout.LayoutParams)mCollapsingToolbar.getLayoutParams();
-                //CollapsingToolbarLayout.LayoutParams paramsCollapsingToolbarLayout = (CollapsingToolbarLayout.LayoutParams)mCollapsingToolbar.getLayoutParams();
-                //CoordinatorLayout.LayoutParams paramsCoordinatorLayout = (CoordinatorLayout.LayoutParams) CoordinatorLayout.getLayoutParams();
-
-
-                Lg.e("fab CLICK mCollapsingToolbar", String.valueOf(mCollapsingToolbar.getHeight()));
-                Lg.e("fab CLICK mToolBar", String.valueOf(mToolBar.getHeight()));
-                //Lg.e("fab CLICK CoordinatorLayout", String.valueOf(CoordinatorLayout.getHeight()));
-                //Lg.e("fab CLICK AppBarLayout", String.valueOf(AppBarLayout.getHeight()));
-
-                 //Lg.e("fab CLICK paramsCollapsingToolbarLayout", String.valueOf(paramsCollapse.height));
-                 Lg.e("fab CLICK paramsToolbar", String.valueOf(paramsToolbar.height));
-                paramsToolbar.height = 300;
-                Lg.e("fab CLICK mToolBar", String.valueOf(mToolBar.getHeight()));
-                Lg.e("fab CLICK paramsToolbar", String.valueOf(paramsToolbar.height));
-                Lg.e("fab CLICK paramsToolbar", String.valueOf(paramsToolbar.height));
-                 //Lg.e("fab CLICK paramsCoordinatorLayout", String.valueOf(paramsCoordinatorLayout.height));
-
-
-
-                //
-
-               // params.height = 42;
-                //mToolBar.setLayoutParams(params);
-                //mToolBar.requestLayout();
-
-
-               // Lg.e("fab CLICK", String.valueOf(params.height));
-
-
             }
         });
     }
 
+
     /**
      * Метод для инициализации своего кастомного ToolBar
      */
-/*    public void setupToolbar() {
-        setSupportActionBar(mToolBar);
-        ActionBar actionBar = getSupportActionBar();
-        params = (AppBarLayout.LayoutParams) mCollapsingToolbar.getLayoutParams();
-
-        if (actionBar != null) {
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-    }*/
     public void getNewToolbar() {
         setSupportActionBar(mToolBar);
         mActionBar = getSupportActionBar();
@@ -182,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
             mActionBar.setDisplayHomeAsUpEnabled(true); //картинка с меню (обычно 3 полоски)
         }
     }
+
 
     /**
      * Метод определяющий высоту StatusBar
@@ -244,8 +175,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Lg.e(this.getLocalClassName(), "data was saved");
-        /*outState.putInt(STATUS_BAR_COLOR, mStatusBarColor);
-        outState.putInt(TOOL_BAR_COLOR, mToolBarColor);*/
     }
 
 
@@ -253,12 +182,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         Lg.e(this.getLocalClassName(), "data was restored");
-        //если есть информация в бандле, достаем и вызываем метод меняющий цвета баров
-        if (savedInstanceState != null) {
-           /* mStatusBarColor = savedInstanceState.getInt(STATUS_BAR_COLOR);
-            mToolBarColor = savedInstanceState.getInt(TOOL_BAR_COLOR);
-            setThemeColor(mStatusBarColor, mToolBarColor);*/
-        }
     }
 
 
@@ -317,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Метод отмечающий элемент в меню
      *
-     * @param id
+     * @param id идентификатор пукнта меню
      */
     public void checkMenu(int id) {
         mNavigationView.getMenu().findItem(id).setChecked(true);
@@ -325,110 +248,27 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Сворачивает ToolBar
-     *
      * @param collapse true - свернуть / false -  развернуть
      */
-    public void collapseAppBarQ(boolean collapse) {
+    //TODO need fixes
+    public void collapseAppBar(boolean collapse) {
         if (collapse) {
             AppBarLayout.OnOffsetChangedListener mListener = new AppBarLayout.OnOffsetChangedListener() {
                 @Override
                 public void onOffsetChanged(AppBarLayout mAppBar, int verticalOffset) {
                     if (mCollapsingToolbar.getHeight() + verticalOffset <= ViewCompat.getMinimumHeight(mCollapsingToolbar) + getStatusBarHeight()) {
-                        Lg.e("collapse Q tag", String.valueOf(mCollapsingToolbar.getHeight() + verticalOffset) + " + "
-                                + String.valueOf(ViewCompat.getMinimumHeight(mCollapsingToolbar)) + String.valueOf(getStatusBarHeight()) +
-                                " + " + String.valueOf(mCollapsingToolbar.getHeight()));
                         mAppBar.removeOnOffsetChangedListener(this);
                         LockToolBar();
                     }
                 }
             };
-            Lg.e("collapse Q tag", "true");
             mAppBar.addOnOffsetChangedListener(mListener);
             mAppBar.setExpanded(false);
+            BlockToolbar.setDrag(false,mAppBar);
         } else {
-            Lg.e("collapse Q tag", "false");
             UnLockToolBar();
             mAppBar.setExpanded(true);
-        }
-    }
-
-
-    public void collapseAppBar(boolean collapse, RecyclerView recyclerView) {
-        if (collapse) {
-            Lg.e("collapse 2 params started", String.valueOf(mCollapsingToolbar.getHeight()));
-
-            if (collapse) {
-                AppBarLayout.OnOffsetChangedListener mListener = new AppBarLayout.OnOffsetChangedListener() {
-                    @Override
-                    public void onOffsetChanged(AppBarLayout mAppBar, int verticalOffset) {
-                        if (mCollapsingToolbar.getHeight() + verticalOffset <= ViewCompat.getMinimumHeight(mCollapsingToolbar) + getStatusBarHeight()) {
-                            Lg.e("collapse Q tag", String.valueOf(verticalOffset));
-                            mAppBar.removeOnOffsetChangedListener(this);
-                            LockToolBar();
-                        }
-                    }
-                };
-
-
-                LockToolBar();
-                mAppBar.setExpanded(false);
-                recyclerView.setNestedScrollingEnabled(false);
-                BlockToolbar.setDrag(false,mAppBar);
-
-            } else {
-                //UnLockToolBar();
-                mAppBar.setExpanded(true);
-                BlockToolbar.setDrag(true, mAppBar);
-            }
-        }
-    }
-
-    public void collapseAppBar(boolean collapse) {
-        Lg.e("collapse only boolean started", String.valueOf(mCollapsingToolbar.getHeight()));
-        if (collapse) {
-            AppBarLayout.OnOffsetChangedListener mListener = new AppBarLayout.OnOffsetChangedListener() {
-                @Override
-                public void onOffsetChanged(AppBarLayout mAppBar, int verticalOffset) {
-                    if (mCollapsingToolbar.getHeight() + verticalOffset <= ViewCompat.getMinimumHeight(mCollapsingToolbar) + getStatusBarHeight()) {
-                        Lg.e("collapse Q tag", String.valueOf(verticalOffset));
-                        mAppBar.removeOnOffsetChangedListener(this);
-                        //LockToolBar();
-                    }
-                }
-            };
-
-            Lg.e("void collapse true", String.valueOf(mCollapsingToolbar.getHeight()));
-            mAppBar.addOnOffsetChangedListener(mListener);
-            mAppBar.setExpanded(false);
-            //BlockToolbar.setDrag(false,mAppBar);
-
-        } else {
-            Lg.e("void collapse false", String.valueOf(mCollapsingToolbar.getHeight()));
-            mAppBar.setExpanded(true);
-            //BlockToolbar.setDrag(true, mAppBar);
-
-        }
-    }
-
-    public void collapseAppBarQQ(boolean collapse) {
-        if (collapse) {
-            Lg.e("collapse true", String.valueOf(mToolBar.getHeight()));
-            mAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-                @Override
-                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                    if (verticalOffset == 0 || verticalOffset <= mToolBar.getHeight()) {
-                        mAppBar.setExpanded(false);
-                        BlockToolbar.setDrag(false, mAppBar);
-                        Lg.e("onOffsetChanged", String.valueOf(mToolBar.getHeight()));
-                    }
-
-                }
-            });
-
-        } else {
-            mAppBar.setExpanded(true);
-            BlockToolbar.setDrag(true, mAppBar);
-            Lg.e("collapse else", String.valueOf(mToolBar.getHeight()));
+            BlockToolbar.setDrag(true,mAppBar);
         }
     }
 

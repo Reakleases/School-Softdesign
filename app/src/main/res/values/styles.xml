@@ -86,5 +86,30 @@
         <item name="android:layout_marginLeft">@dimen/spacing_larger</item>
     </style>
 
+    <style name="toolbar_title">
+        <item name="android:textSize">@dimen/toolbar_rating_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#DE000000</item>
+        <item name="android:shadowDx">0.0</item>
+        <item name="android:shadowDy">0.0</item>
+        <item name="android:shadowRadius">5.0</item>
+    </style>
+
+
+
+
+    <!-- Styles for CollapsingToolbar Text -->
+
+    <style name="toolbar_expanded_title">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:textStyle">bold</item>
+        <!-- Text Outline -->
+        <item name="android:shadowColor">#DE000000</item>
+        <item name="android:shadowDx">0.0</item>
+        <item name="android:shadowDy">0.0</item>
+        <item name="android:shadowRadius">9.0</item>
+    </style>
+
 
 </resources>
