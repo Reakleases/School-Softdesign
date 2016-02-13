@@ -25,19 +25,22 @@ import com.softdesign.school.ui.fragments.TeamFragment;
 import com.softdesign.school.utils.BlockToolbar;
 import com.softdesign.school.utils.Lg;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 public class MainActivity extends AppCompatActivity {
 
 
-    private Toolbar mToolBar;
-    private ActionBar mActionBar;
-    private NavigationView mNavigationView;
-    private DrawerLayout mNavigationDrawer;
-    private Fragment mFragment;
-    private FloatingActionButton mFloatingActionButton;
+    @Bind(R.id.toolbar) Toolbar mToolBar;
+    @Bind(R.id.navigation_drawer) DrawerLayout mNavigationDrawer;
+    @Bind(R.id.navigation_view) NavigationView mNavigationView;
+    @Bind(R.id.collapsing_toolbar) CollapsingToolbarLayout mCollapsingToolbar;
+    @Bind(R.id.appbar_layout) AppBarLayout mAppBar;
+    @Bind(R.id.fab) FloatingActionButton mFloatingActionButton;
 
-    public AppBarLayout mAppBar;
-    public CollapsingToolbarLayout mCollapsingToolbar;
+    private ActionBar mActionBar;
+    private Fragment mFragment;
     public AppBarLayout.LayoutParams params = null;
 
 
@@ -48,12 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
         Lg.e(this.getLocalClassName(), "========================\non Create");
 
-        mToolBar = (Toolbar) findViewById(R.id.toolbar);
-        mNavigationDrawer = (DrawerLayout) findViewById(R.id.navigation_drawer);
-        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
-        mAppBar = (AppBarLayout) findViewById(R.id.appbar_layout);
-        mCollapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        ButterKnife.bind(this);
+
         mCollapsingToolbar.setTitle(getResources().getString(R.string.fragment_profile_title));
 
         //для обращения к элементам NavigationView
@@ -64,13 +63,11 @@ public class MainActivity extends AppCompatActivity {
         setupToolbar();
         setupDrawer();
 
-
         //задаем отступ в NavigationDrawer для того, чтобы элементы не уходили под StatuBar
         //и не делаем отступ в версии андроида < 5.0
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mHeaderLayout.setPadding(0, getStatusBarHeight(), 0, 0);
         }
-
 
         //первый запуск
         if (savedInstanceState == null) {
