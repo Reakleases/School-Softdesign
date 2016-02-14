@@ -9,16 +9,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.softdesign.school.R;
-import com.softdesign.school.data.storage.models.User;
+import com.softdesign.school.data.storage.models.UserOld;
 
 import java.util.ArrayList;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.UserViewHolder> {
 
 
-    private ArrayList<User> mDataSet;
+    private ArrayList<UserOld> mDataSet;
 
-    public ContactAdapter(ArrayList<User> mDataSet) {
+    public ContactAdapter(ArrayList<UserOld> mDataSet) {
         this.mDataSet = mDataSet;
     }
 
@@ -31,7 +31,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.UserView
 
     @Override
     public void onBindViewHolder(UserViewHolder holder, int position) {
-        User user = mDataSet.get(position);
+        UserOld user = mDataSet.get(position);
         holder.fullName.setText(user.getmFirstName() + " " + user.getmLastName());
         holder.avatar.setImageDrawable(user.getmImage());
 

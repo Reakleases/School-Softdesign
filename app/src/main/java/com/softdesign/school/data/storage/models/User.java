@@ -1,83 +1,16 @@
 package com.softdesign.school.data.storage.models;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 
-import android.graphics.drawable.Drawable;
+@Table(name = "Users")
+public class User extends Model {
+    @Column(name = "firstName")
+    public String firstName;
 
-
-public class User {
-
-    private String mFirstName;
-    private String mLastName;
-    private int mRait;
-    private Drawable mImage;
-    private String mVkLink;
-    private String mGitLink;
-
-    public User(){}
-
-    public User(Drawable avatar, String firstName, String lastName){
-        this.mImage = avatar;
-        this.mFirstName = firstName;
-        this.mLastName = lastName;
-    }
-
-    public User(String mFirstName, String mLastName, Drawable mImage, String mVkLink, String mGitLink, int mRait) {
-        this.mFirstName = mFirstName;
-        this.mLastName = mLastName;
-        this.mRait = mRait;
-        this.mImage = mImage;
-        this.mVkLink = mVkLink;
-        this.mGitLink = mGitLink;
-    }
-
-    public String getmFirstName() {
-        return mFirstName;
-    }
-
-    public String getmLastName() {
-        return mLastName;
-    }
-
-    public int getmRait() {
-        return mRait;
-    }
-
-
-    public Drawable getmImage() {
-        return mImage;
-    }
-
-    public String getmVkLink() {
-        return mVkLink;
-    }
-
-    public String getmGitLink() {
-        return mGitLink;
-    }
-
-    public void setmFirstName(String mFirstName) {
-        this.mFirstName = mFirstName;
-    }
-
-    public void setmLastName(String mLastName) {
-        this.mLastName = mLastName;
-    }
-
-    public void setmRait(int mRait) {
-        this.mRait = mRait;
-    }
-
-
-    public void setmImage(Drawable mImage) {
-        this.mImage = mImage;
-    }
-
-    public void setmVkLink(String mVkLink) {
-        this.mVkLink = mVkLink;
-    }
-
-    public void setmGitLink(String mGitLink) {
-        this.mGitLink = mGitLink;
-    }
+    @Column(name = "lastName")
+    public String lastName;
+    @Column (name = "team")
+    public String team;
 }
-

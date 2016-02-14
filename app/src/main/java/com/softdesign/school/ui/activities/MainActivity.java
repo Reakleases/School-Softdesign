@@ -248,6 +248,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Сворачивает ToolBar
+     *
      * @param collapse true - свернуть / false -  развернуть
      */
     //TODO need fixes
@@ -264,11 +265,11 @@ public class MainActivity extends AppCompatActivity {
             };
             mAppBar.addOnOffsetChangedListener(mListener);
             mAppBar.setExpanded(false);
-            BlockToolbar.setDrag(false,mAppBar);
+            BlockToolbar.setDrag(false, mAppBar);
         } else {
             UnLockToolBar();
             mAppBar.setExpanded(true);
-            BlockToolbar.setDrag(true,mAppBar);
+            BlockToolbar.setDrag(true, mAppBar);
         }
     }
 
