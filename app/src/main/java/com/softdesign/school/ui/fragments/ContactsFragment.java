@@ -23,6 +23,8 @@ import com.softdesign.school.utils.Lg;
 import java.util.ArrayList;
 
 
+
+
 public class ContactsFragment extends Fragment {
 
 
@@ -40,6 +42,18 @@ public class ContactsFragment extends Fragment {
         mAdapter = new ContactAdapter(mUsers);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
 
     @Nullable
     @Override
@@ -50,12 +64,13 @@ public class ContactsFragment extends Fragment {
             Lg.e("Contact fragment", "inflating new fragment");
         }
 
+        return mainView;
+    }
 
 
 
-
-
-
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 
 
         getActivity().setTitle(R.string.drawer_contacts);
@@ -65,17 +80,8 @@ public class ContactsFragment extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         listContacts.setLayoutManager(mLayoutManager);
         listContacts.setAdapter(mAdapter);
-        ((MainActivity) getActivity()).collapseAppBar(true);
 
 
-
-        return mainView;
-    }
-
-
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ((MainActivity) getActivity()).checkMenu(R.id.drawer_contacts);
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
@@ -85,6 +91,8 @@ public class ContactsFragment extends Fragment {
         fab.setLayoutParams(params);
         fab.setImageResource(R.drawable.ic_add);
         fab.show();
+
+        ((MainActivity) getActivity()).collapseAppBar(true);
 
     }
 

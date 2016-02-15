@@ -16,6 +16,7 @@
         <item
             android:id="@+id/drawer_team"
             android:title="@string/drawer.team"
+
             android:icon="@drawable/ic_group_work_black_24dp">
         </item>
         <item
@@ -26,7 +27,8 @@
         <item
             android:id="@+id/drawer_settings"
             android:title="@string/drawer.settings"
-            android:icon="@drawable/ic_settings_black_24dp">
+            android:icon="@drawable/ic_settings_black_24dp"
+            android:checkable="false">
         </item>
     </group>
 
