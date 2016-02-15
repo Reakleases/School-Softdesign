@@ -12,5 +12,27 @@ public class User extends Model {
     @Column(name = "lastName")
     public String lastName;
     @Column (name = "team")
-    public String team;
+    public Team team;
+
+    public User() {
+        super();
+    }
+
+    public User(String firstName, String lastName, Team team) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.team = team;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
 }

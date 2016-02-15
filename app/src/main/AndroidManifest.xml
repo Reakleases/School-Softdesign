@@ -13,7 +13,8 @@
         <meta-data android:name="AA_DB_VERSION" android:value="1" />
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.softdesign.school.data.storage.models.Team"/>
+            android:value="com.softdesign.school.data.storage.models.Team,
+            com.softdesign.school.data.storage.models.User"/>
 
         <activity android:name=".ui.activities.MainActivity">
             <intent-filter>

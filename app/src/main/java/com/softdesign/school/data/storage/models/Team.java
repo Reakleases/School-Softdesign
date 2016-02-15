@@ -11,6 +11,15 @@ public class Team extends Model {
     @Column(name = "name")
     public String name;
 
+    public Team(String name) {
+        this.name = name;
+    }
 
+    public  Team(){
+        super();
+    }
 
+    public String getName() {
+        return name;
+    }
 }

@@ -1,5 +1,6 @@
 package com.softdesign.school.ui.activities;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -20,7 +21,6 @@ import com.softdesign.school.ui.fragments.ContactsFragment;
 import com.softdesign.school.ui.fragments.ProfileFragment;
 import com.softdesign.school.ui.fragments.SettingFragment;
 import com.softdesign.school.ui.fragments.TasksFragment;
-import com.softdesign.school.ui.fragments.TeamFragment;
 import com.softdesign.school.utils.BlockToolbar;
 import com.softdesign.school.utils.Lg;
 
@@ -192,7 +192,9 @@ public class MainActivity extends AppCompatActivity {
                         mFragment = new ContactsFragment();
                         break;
                     case R.id.drawer_team:
-                        mFragment = new TeamFragment();
+                        //mFragment = new TeamFragment();
+                        Intent intent = new Intent(MainActivity.this, TeamActivity.class);
+                        startActivity(intent);
                         break;
                     case R.id.drawer_tasks:
                         mFragment = new TasksFragment();
