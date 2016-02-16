@@ -47,6 +47,11 @@
     <string name="fragment.profile.bio.label">О себе</string>
     <string name="add_team">Add Team</string>
     <string name="add_user">Add User</string>
+    <string name="dialog_add_user">Добавить пользователя</string>
+    <string name="dialog_add_team">Добавить команду</string>
+    <string name="hint_add_team">Название команды</string>
+    <string name="hint_add_firstname">Имя</string>
+    <string name="hint_add_lastname">Фамилия</string>
 
 
 </resources>

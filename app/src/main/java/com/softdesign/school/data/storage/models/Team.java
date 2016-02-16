@@ -5,6 +5,8 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
+import java.util.List;
+
 @Table(name = "Teams")
 public class Team extends Model {
 
@@ -22,4 +24,8 @@ public class Team extends Model {
     public String getName() {
         return name;
     }
+    public List<User> users() {
+        return getMany(User.class, "team");
+    }
+
 }
