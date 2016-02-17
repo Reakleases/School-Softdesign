@@ -10,8 +10,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.activeandroid.query.Select;
 import com.softdesign.school.R;
+import com.softdesign.school.data.storage.models.User;
 import com.softdesign.school.utils.Lg;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,23 +29,17 @@ public class TeamActivity extends AppCompatActivity {
     Button mBtnAddUser;
 
     private DialogFragment mDialogFragment;
+    List<User> mUsers;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_team);
         ButterKnife.bind(this);
         setTitle("Контакты");
-
         setListener();
-
-
     }
-
 
 
     private void setListener() {
@@ -63,8 +61,6 @@ public class TeamActivity extends AppCompatActivity {
                 }
 
             }
-
-
 
 
         };
@@ -100,10 +96,16 @@ public class TeamActivity extends AppCompatActivity {
                 .setView(layout);
         AlertDialog alert = builder.create();
         alert.show();
-        
-
-
     }
 
+    public void loadData() {
+        mUsers = getDataListUsers();
+    }
+
+    public List<User> getDataListUsers() {
+        return new Select()
+                .from(User.class)
+                .execute();
+    }
 
 }

@@ -294,7 +294,9 @@ public class MainActivity extends AppCompatActivity {
      * Блокирует ToolBar выставляя scrollFlag
      */
     private void UnLockToolBar() {
-        params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
+        params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL |
+                AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED |
+                AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP);
         mCollapsingToolbar.setLayoutParams(params);
     }
 }

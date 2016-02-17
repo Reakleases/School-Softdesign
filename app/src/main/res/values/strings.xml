@@ -52,6 +52,7 @@
     <string name="hint_add_team">Название команды</string>
     <string name="hint_add_firstname">Имя</string>
     <string name="hint_add_lastname">Фамилия</string>
+    <string name="add_user_team_text">Команда</string>
 
 
 </resources>
