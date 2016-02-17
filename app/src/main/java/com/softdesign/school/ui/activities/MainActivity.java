@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -29,17 +30,22 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolbar) Toolbar mToolBar;
-    @Bind(R.id.navigation_drawer) DrawerLayout mNavigationDrawer;
-    @Bind(R.id.navigation_view) NavigationView mNavigationView;
-    @Bind(R.id.collapsing_toolbar) CollapsingToolbarLayout mCollapsingToolbar;
-    @Bind(R.id.appbar_layout) AppBarLayout mAppBar;
-    @Bind(R.id.fab) FloatingActionButton mFloatingActionButton;
+    @Bind(R.id.toolbar)
+    Toolbar mToolBar;
+    @Bind(R.id.navigation_drawer)
+    DrawerLayout mNavigationDrawer;
+    @Bind(R.id.navigation_view)
+    NavigationView mNavigationView;
+    @Bind(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout mCollapsingToolbar;
+    @Bind(R.id.appbar_layout)
+    AppBarLayout mAppBar;
+    @Bind(R.id.fab)
+    FloatingActionButton mFloatingActionButton;
 
     private Fragment mFragment;
     private ActionBar mActionBar;
     public AppBarLayout.LayoutParams params = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO
+                LockToolBar();
             }
         });
     }
@@ -203,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
                         mFragment = new SettingFragment();
                         break;
                 }
-                if (mFragment != null ) {
+                if (mFragment != null) {
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.main_frame_container, mFragment)
                             .addToBackStack(mFragment.getClass().getName())
@@ -253,14 +260,42 @@ public class MainActivity extends AppCompatActivity {
      */
     public void collapseAppBar(boolean collapse) {
         if (collapse) {
-
+            UnLockToolBar();
+            AppBarLayout.OnOffsetChangedListener mListener = new AppBarLayout.OnOffsetChangedListener() {
+                @Override
+                public void onOffsetChanged(AppBarLayout mAppBar, int verticalOffset) {
+                    if (mCollapsingToolbar.getHeight() + verticalOffset <= ViewCompat.getMinimumHeight(mCollapsingToolbar) + getStatusBarHeight()) {
+                        mAppBar.removeOnOffsetChangedListener(this);
+                        LockToolBar();
+                        BlockToolbar.setDrag(false, mAppBar);
+                    }
+                }
+            };
             mAppBar.setExpanded(false);
             BlockToolbar.setDrag(false, mAppBar);
+            mAppBar.addOnOffsetChangedListener(mListener);
         } else {
+            UnLockToolBar();
             mAppBar.setExpanded(true);
             BlockToolbar.setDrag(true, mAppBar);
         }
     }
 
+    /**
+     * Снимает блокировку с ToolBar выставляя scrollFlag
+     */
+    private void LockToolBar() {
+        Lg.e("lock", "got locked");
+        params.setScrollFlags(0);
+        mCollapsingToolbar.setLayoutParams(params);
+    }
+
+    /**
+     * Блокирует ToolBar выставляя scrollFlag
+     */
+    private void UnLockToolBar() {
+        params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
+        mCollapsingToolbar.setLayoutParams(params);
+    }
 }
 

@@ -23,8 +23,6 @@ import com.softdesign.school.utils.Lg;
 import java.util.ArrayList;
 
 
-
-
 public class ContactsFragment extends Fragment {
 
 
@@ -32,7 +30,6 @@ public class ContactsFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     RecyclerView listContacts;
     View mainView;
-
 
 
     @Override
@@ -68,7 +65,6 @@ public class ContactsFragment extends Fragment {
     }
 
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 
@@ -93,7 +89,6 @@ public class ContactsFragment extends Fragment {
         fab.show();
 
         ((MainActivity) getActivity()).collapseAppBar(true);
-
     }
 
 
@@ -153,7 +148,6 @@ public class ContactsFragment extends Fragment {
         mUsers.add(new UserOld(ContextCompat.getDrawable(getActivity(), R.drawable.ic_account_circle_24dp), "Инга", "Инжир"));
         mUsers.add(new UserOld(ContextCompat.getDrawable(getActivity(), R.drawable.ic_account_circle_24dp), "Анна", "Пожидаева"));
     }
-
 
 
 }
