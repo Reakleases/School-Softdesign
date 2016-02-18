@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionBar mActionBar;
     public AppBarLayout.LayoutParams params = null;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         //для обращения к элементам NavigationView
         View mHeaderLayout = mNavigationView.getHeaderView(0);
 
-        mCollapsingToolbar.setTitle(getResources().getString(R.string.fragment_profile_title));
+
 
         fabClick();
         getNewToolbar();

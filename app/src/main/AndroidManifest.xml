@@ -16,14 +16,14 @@
             android:value="com.softdesign.school.data.storage.models.Team,
             com.softdesign.school.data.storage.models.User"/>
 
-        <activity android:name=".ui.activities.MainActivity">
+        <activity android:name=".ui.activities.TeamActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.TeamActivity"/>
+        <activity android:name=".ui.activities.MainActivity"/>
     </application>
 
 </manifest>
