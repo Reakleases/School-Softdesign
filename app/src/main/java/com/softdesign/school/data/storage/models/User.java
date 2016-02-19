@@ -11,7 +11,7 @@ public class User extends Model {
 
     @Column(name = "lastName")
     public String lastName;
-    @Column (name = "team")
+    @Column(name = "team")
     public Team team;
 
     public User() {

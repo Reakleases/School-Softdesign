@@ -6,7 +6,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewCompat;
 
 public class BlockToolbar {
-    public static void setDrag(boolean isDrag, AppBarLayout appBar){
+    public static void setDrag(boolean isDrag, AppBarLayout appBar) {
         final boolean drag = isDrag;
         if (ViewCompat.isLaidOut(appBar)) {
             CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBar.getLayoutParams();
@@ -18,7 +18,5 @@ public class BlockToolbar {
                 }
             });
         }
-
-
     }
 }

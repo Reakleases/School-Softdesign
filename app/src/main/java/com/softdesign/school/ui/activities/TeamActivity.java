@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
@@ -18,17 +17,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.activeandroid.query.Select;
 import com.softdesign.school.R;
-import com.softdesign.school.data.storage.models.User;
-import com.softdesign.school.ui.adapters.UserAdapter;
 import com.softdesign.school.ui.fragments.UserFragmentAdd;
 import com.softdesign.school.utils.Lg;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,8 +37,6 @@ public class TeamActivity extends AppCompatActivity {
     DrawerLayout mNavigationDrawer;
     @Bind(R.id.navigation_view)
     NavigationView mNavigationView;
-    @Bind(R.id.collapsing_toolbar)
-    CollapsingToolbarLayout mCollapsingToolbar;
     @Bind(R.id.appbar_layout)
     AppBarLayout mAppBar;
     @Bind(R.id.fab)
@@ -52,13 +46,18 @@ public class TeamActivity extends AppCompatActivity {
     @Bind(R.id.btn_add_user)
     Button mBtnAddUser;
 
+
     public AppBarLayout.LayoutParams params = null;
     private Fragment mFragment;
     private ActionBar mActionBar;
     private DialogFragment mDialogFragment;
-    List<User> mUsers;
-    UserAdapter userAdapter;
+    private AlertDialog mAlert;
+    private Spinner mSpinner;
+
+
+
     String[] data = {"one", "two", "three", "four", "five"};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,16 +65,11 @@ public class TeamActivity extends AppCompatActivity {
         setContentView(R.layout.activity_team);
         ButterKnife.bind(this);
         setTitle("Контакты");
-        setListener();
 
-        userAdapter = new UserAdapter(this);
 
-        //первый запуск
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_frame_container, new UserFragmentAdd())
-                    .commit();
-        }
+
+
+
 
         getNewToolbar();
         setupToolbar();
@@ -87,7 +81,21 @@ public class TeamActivity extends AppCompatActivity {
             mHeaderLayout.setPadding(0, getStatusBarHeight(), 0, 0);
         }
 
+       // mAppBar.setExpanded(false,false);
+/*        BlockToolbar.setDrag(false,mAppBar);
+        params.setScrollFlags(0);
+        mCollapsingToolbar.setLayoutParams(params);*/
 
+
+        //первый запуск
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_frame_container, new UserFragmentAdd())
+                    .commit();
+        }
+
+
+        setListener();
 
     }
 
@@ -98,7 +106,7 @@ public class TeamActivity extends AppCompatActivity {
     public void getNewToolbar() {
         setSupportActionBar(mToolBar);
         mActionBar = getSupportActionBar();
-        params = (AppBarLayout.LayoutParams) mCollapsingToolbar.getLayoutParams();
+        //params = (AppBarLayout.LayoutParams) mCollapsingToolbar.getLayoutParams();
     }
 
 
@@ -152,6 +160,11 @@ public class TeamActivity extends AppCompatActivity {
         }
     }
 
+
+
+
+
+
     //вешаем Listener на кнопки добавления команды/контакта
     private void setListener() {
         Button.OnClickListener dialogButtons = new Button.OnClickListener() {
@@ -162,12 +175,12 @@ public class TeamActivity extends AppCompatActivity {
                     case R.id.btn_add_team:
                         Lg.e("btn", "team");
                         title = "Добавить Команду?";
-                        configDialog(title, R.layout.dialog_add_team);
+                        configDialog(title, R.layout.dialog_add_team, false);
                         break;
                     case R.id.btn_add_user:
                         Lg.e("btn", "user");
                         title = "Добавить Пользователя?";
-                        configDialog(title, R.layout.dialog_add_user);
+                        configDialog(title, R.layout.dialog_add_user, true);
                         break;
                 }
 
@@ -177,9 +190,13 @@ public class TeamActivity extends AppCompatActivity {
         };
         mBtnAddTeam.setOnClickListener(dialogButtons);
         mBtnAddUser.setOnClickListener(dialogButtons);
+
+        //spinner
+
     }
 
-    private void configDialog(String titleText, int layout) {
+
+    private void configDialog(String titleText, int layout, boolean needSpinner) {
         //кастомный заголовок
         TextView title = new TextView(this);
         title.setText(titleText);
@@ -187,7 +204,7 @@ public class TeamActivity extends AppCompatActivity {
         title.setGravity(Gravity.CENTER);
 
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(TeamActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCustomTitle(title)
                 .setCancelable(false)
                 .setPositiveButton("Готово",
@@ -205,18 +222,17 @@ public class TeamActivity extends AppCompatActivity {
                             }
                         })
                 .setView(layout);
-        AlertDialog alert = builder.create();
-        alert.show();
+        mAlert = builder.create();
+        mAlert.show();
+
+
+        if (needSpinner) {
+            mSpinner = (Spinner) mAlert.findViewById(R.id.spinner);
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,data);
+            mSpinner.setAdapter(spinnerAdapter);
+        }
+
     }
 
-    public void loadData() {
-        mUsers = getDataListUsers();
-    }
-
-    public List<User> getDataListUsers() {
-        return new Select()
-                .from(User.class)
-                .execute();
-    }
 
 }
