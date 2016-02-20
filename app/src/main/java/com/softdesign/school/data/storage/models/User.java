@@ -3,6 +3,9 @@ package com.softdesign.school.data.storage.models;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
+
+import java.util.List;
 
 @Table(name = "Users")
 public class User extends Model {
@@ -34,5 +37,11 @@ public class User extends Model {
 
     public Team getTeam() {
         return team;
+    }
+
+    public static List<User> getDataListUsers() {
+        return new Select()
+                .from(User.class)
+                .execute();
     }
 }

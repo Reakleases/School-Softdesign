@@ -15,14 +15,18 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.softdesign.school.R;
+import com.softdesign.school.data.storage.models.Team;
+import com.softdesign.school.data.storage.models.User;
 import com.softdesign.school.ui.fragments.UserFragmentAdd;
 import com.softdesign.school.utils.Lg;
 
@@ -51,9 +55,10 @@ public class TeamActivity extends AppCompatActivity {
     private Fragment mFragment;
     private ActionBar mActionBar;
     private DialogFragment mDialogFragment;
-    private AlertDialog mAlert;
     private Spinner mSpinner;
-
+    private EditText mFirstName;
+    private EditText mLastName;
+    private EditText mTeam;
 
 
     String[] data = {"one", "two", "three", "four", "five"};
@@ -67,12 +72,9 @@ public class TeamActivity extends AppCompatActivity {
         setTitle("Контакты");
 
 
-
-
-
-
         getNewToolbar();
         setupToolbar();
+
 
         View mHeaderLayout = mNavigationView.getHeaderView(0);
         //задаем отступ в NavigationDrawer для того, чтобы элементы не уходили под StatuBar
@@ -81,7 +83,7 @@ public class TeamActivity extends AppCompatActivity {
             mHeaderLayout.setPadding(0, getStatusBarHeight(), 0, 0);
         }
 
-       // mAppBar.setExpanded(false,false);
+        // mAppBar.setExpanded(false,false);
 /*        BlockToolbar.setDrag(false,mAppBar);
         params.setScrollFlags(0);
         mCollapsingToolbar.setLayoutParams(params);*/
@@ -161,26 +163,27 @@ public class TeamActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
     //вешаем Listener на кнопки добавления команды/контакта
     private void setListener() {
+
         Button.OnClickListener dialogButtons = new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LayoutInflater inflater = getLayoutInflater();
                 String title;
+                View view;
                 switch (v.getId()) {
                     case R.id.btn_add_team:
                         Lg.e("btn", "team");
                         title = "Добавить Команду?";
-                        configDialog(title, R.layout.dialog_add_team, false);
+                        view = inflater.inflate(R.layout.dialog_add_team, null);
+                        configDialog(title, view, false);
                         break;
                     case R.id.btn_add_user:
                         Lg.e("btn", "user");
                         title = "Добавить Пользователя?";
-                        configDialog(title, R.layout.dialog_add_user, true);
+                        view = inflater.inflate(R.layout.dialog_add_user, null);
+                        configDialog(title, view, true);
                         break;
                 }
 
@@ -196,12 +199,26 @@ public class TeamActivity extends AppCompatActivity {
     }
 
 
-    private void configDialog(String titleText, int layout, boolean needSpinner) {
+    private void configDialog(String titleText, View layout, final boolean needSpinner) {
         //кастомный заголовок
+
         TextView title = new TextView(this);
         title.setText(titleText);
         title.setPadding(10, 10, 10, 10);
         title.setGravity(Gravity.CENTER);
+
+
+        if (needSpinner){
+            mSpinner = (Spinner) layout.findViewById(R.id.spinner);
+            mFirstName = (EditText) layout.findViewById(R.id.et_add_firstname_value);
+            mLastName = (EditText) layout.findViewById(R.id.et_add_lastname_value);
+            Team.getAllNames();
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, Team.getAllNames());
+            mSpinner.setAdapter(spinnerAdapter);
+        } else {
+            mTeam = (EditText) layout.findViewById(R.id.et_add_team_value);
+        }
+
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -211,6 +228,14 @@ public class TeamActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                if (needSpinner) {
+                                    saveDataUser();
+                                    Lg.e ("needSpinner","saveDataUser()");
+                                } else {
+                                    saveDataTeam();
+                                    Lg.e ("not needSpinner","saveDataTeam()");
+                                }
+
                                 dialog.cancel();
                             }
                         })
@@ -222,15 +247,26 @@ public class TeamActivity extends AppCompatActivity {
                             }
                         })
                 .setView(layout);
-        mAlert = builder.create();
-        mAlert.show();
+        AlertDialog alert = builder.create();
+        alert.show();
 
 
-        if (needSpinner) {
-            mSpinner = (Spinner) mAlert.findViewById(R.id.spinner);
-            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,data);
-            mSpinner.setAdapter(spinnerAdapter);
-        }
+
+    }
+
+    public void saveDataUser() {
+        Team team = Team.getTeamByName(mSpinner.getSelectedItem().toString());
+        String firstName = mFirstName.getText().toString();
+        String lastName = mLastName.getText().toString();
+        User user = new User(firstName, lastName, team);
+        user.save();
+
+    }
+
+    public void saveDataTeam() {
+        String name = mTeam.getText().toString();
+        Team team = new Team(name);
+        team.save();
 
     }
 

@@ -30,6 +30,7 @@ public class RecycleUserAdapter extends RecyclerView.Adapter<RecycleUserAdapter.
     public void onBindViewHolder(UserViewHolder holder, int position) {
         User user = mDataSet.get(position);
         holder.fullName.setText(user.getFirstName() + " " + user.getLastName());
+        holder.teamName.setText(user.getTeam().getName());
 
 
     }
@@ -42,10 +43,13 @@ public class RecycleUserAdapter extends RecyclerView.Adapter<RecycleUserAdapter.
     public static class UserViewHolder extends RecyclerView.ViewHolder {
 
         protected TextView fullName;
+        protected TextView teamName;
 
         public UserViewHolder(View convertView) {
             super(convertView);
             fullName = (TextView) convertView.findViewById(R.id.user_full_name);
+            teamName = (TextView) convertView.findViewById(R.id.user_team);
+
         }
     }
 
