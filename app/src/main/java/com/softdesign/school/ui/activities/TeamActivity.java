@@ -1,10 +1,9 @@
 package com.softdesign.school.ui.activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -27,13 +26,16 @@ import android.widget.TextView;
 import com.softdesign.school.R;
 import com.softdesign.school.data.storage.models.Team;
 import com.softdesign.school.data.storage.models.User;
+import com.softdesign.school.ui.fragments.SettingFragment;
+import com.softdesign.school.ui.fragments.TasksFragment;
+import com.softdesign.school.ui.fragments.TeamFragmentAdd;
 import com.softdesign.school.ui.fragments.UserFragmentAdd;
 import com.softdesign.school.utils.Lg;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class TeamActivity extends AppCompatActivity {
+public class TeamActivity extends AppCompatActivity  {
 
     @Bind(R.id.toolbar)
     Toolbar mToolBar;
@@ -41,17 +43,12 @@ public class TeamActivity extends AppCompatActivity {
     DrawerLayout mNavigationDrawer;
     @Bind(R.id.navigation_view)
     NavigationView mNavigationView;
-    @Bind(R.id.appbar_layout)
-    AppBarLayout mAppBar;
-    @Bind(R.id.fab)
-    FloatingActionButton mFloatingActionButton;
     @Bind(R.id.btn_add_team)
     Button mBtnAddTeam;
     @Bind(R.id.btn_add_user)
     Button mBtnAddUser;
 
 
-    public AppBarLayout.LayoutParams params = null;
     private Fragment mFragment;
     private ActionBar mActionBar;
     private DialogFragment mDialogFragment;
@@ -59,9 +56,7 @@ public class TeamActivity extends AppCompatActivity {
     private EditText mFirstName;
     private EditText mLastName;
     private EditText mTeam;
-
-
-    String[] data = {"one", "two", "three", "four", "five"};
+    public static final String ACTIVITY_START = "activity start";
 
 
     @Override
@@ -74,6 +69,7 @@ public class TeamActivity extends AppCompatActivity {
 
         getNewToolbar();
         setupToolbar();
+        setupDrawer();
 
 
         View mHeaderLayout = mNavigationView.getHeaderView(0);
@@ -83,21 +79,17 @@ public class TeamActivity extends AppCompatActivity {
             mHeaderLayout.setPadding(0, getStatusBarHeight(), 0, 0);
         }
 
-        // mAppBar.setExpanded(false,false);
-/*        BlockToolbar.setDrag(false,mAppBar);
-        params.setScrollFlags(0);
-        mCollapsingToolbar.setLayoutParams(params);*/
 
-
+        boolean value = getIntent().getBooleanExtra(ACTIVITY_START, false);
         //первый запуск
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_frame_container, new UserFragmentAdd())
+                    .replace(R.id.main_frame_container, new UserFragmentAdd(),"UserAddTag")
                     .commit();
         }
 
-
         setListener();
+
 
     }
 
@@ -108,7 +100,6 @@ public class TeamActivity extends AppCompatActivity {
     public void getNewToolbar() {
         setSupportActionBar(mToolBar);
         mActionBar = getSupportActionBar();
-        //params = (AppBarLayout.LayoutParams) mCollapsingToolbar.getLayoutParams();
     }
 
 
@@ -165,7 +156,6 @@ public class TeamActivity extends AppCompatActivity {
 
     //вешаем Listener на кнопки добавления команды/контакта
     private void setListener() {
-
         Button.OnClickListener dialogButtons = new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,21 +184,20 @@ public class TeamActivity extends AppCompatActivity {
         mBtnAddTeam.setOnClickListener(dialogButtons);
         mBtnAddUser.setOnClickListener(dialogButtons);
 
-        //spinner
 
     }
 
 
+    //формируем диалог
     private void configDialog(String titleText, View layout, final boolean needSpinner) {
         //кастомный заголовок
-
         TextView title = new TextView(this);
         title.setText(titleText);
         title.setPadding(10, 10, 10, 10);
         title.setGravity(Gravity.CENTER);
 
-
-        if (needSpinner){
+        //spinner
+        if (needSpinner) {
             mSpinner = (Spinner) layout.findViewById(R.id.spinner);
             mFirstName = (EditText) layout.findViewById(R.id.et_add_firstname_value);
             mLastName = (EditText) layout.findViewById(R.id.et_add_lastname_value);
@@ -219,8 +208,7 @@ public class TeamActivity extends AppCompatActivity {
             mTeam = (EditText) layout.findViewById(R.id.et_add_team_value);
         }
 
-
-
+        //на основе нажатой кнопки делаем диалог для добавления юзера или команды
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCustomTitle(title)
                 .setCancelable(false)
@@ -230,12 +218,12 @@ public class TeamActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 if (needSpinner) {
                                     saveDataUser();
-                                    Lg.e ("needSpinner","saveDataUser()");
+                                    Fragment fragment = getSupportFragmentManager().findFragmentByTag("UserAddTag");
+                                    if (fragment instanceof UserFragmentAdd)
+                                        ((UserFragmentAdd) fragment).reloadFragment();
                                 } else {
                                     saveDataTeam();
-                                    Lg.e ("not needSpinner","saveDataTeam()");
                                 }
-
                                 dialog.cancel();
                             }
                         })
@@ -249,24 +237,62 @@ public class TeamActivity extends AppCompatActivity {
                 .setView(layout);
         AlertDialog alert = builder.create();
         alert.show();
-
-
-
     }
 
     public void saveDataUser() {
+
         Team team = Team.getTeamByName(mSpinner.getSelectedItem().toString());
         String firstName = mFirstName.getText().toString();
         String lastName = mLastName.getText().toString();
-        User user = new User(firstName, lastName, team);
-        user.save();
-
+        new User(firstName, lastName, team).save();
     }
 
     public void saveDataTeam() {
         String name = mTeam.getText().toString();
-        Team team = new Team(name);
-        team.save();
+        new Team(name).save();
+    }
+
+    /**
+     * Инициализация NavigationDrawer
+     */
+    private void setupDrawer() {
+        mNavigationView.getMenu().getItem(3).setEnabled(false);
+        mNavigationView.getMenu().getItem(4).setEnabled(false);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.drawer_profile:
+                        //mFragment = new ProfileFragment();
+                        Intent intent = new Intent(TeamActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.drawer_contacts:
+                        mFragment = new UserFragmentAdd();
+                        break;
+                    case R.id.drawer_team:
+                        //mFragment = new TeamFragment();
+                        //Intent intent = new Intent(MainActivity.this, TeamActivity.class);
+                        //startActivity(intent);
+                        mFragment = new TeamFragmentAdd();
+                        break;
+                    case R.id.drawer_tasks:
+                        mFragment = new TasksFragment();
+                        break;
+                    case R.id.drawer_settings:
+                        mFragment = new SettingFragment();
+                        break;
+                }
+                if (mFragment != null) {
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_frame_container, mFragment)
+                            .addToBackStack(mFragment.getClass().getName())
+                            .commit();
+                }
+                mNavigationDrawer.closeDrawers();
+                return false;
+            }
+        });
 
     }
 

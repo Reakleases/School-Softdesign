@@ -31,13 +31,11 @@ public class RecycleUserAdapter extends RecyclerView.Adapter<RecycleUserAdapter.
         User user = mDataSet.get(position);
         holder.fullName.setText(user.getFirstName() + " " + user.getLastName());
         holder.teamName.setText(user.getTeam().getName());
-
-
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mDataSet.size();
     }
 
     public static class UserViewHolder extends RecyclerView.ViewHolder {
