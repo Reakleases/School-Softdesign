@@ -68,7 +68,7 @@ public class ContactsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 
-
+        super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(R.string.drawer_contacts);
 
         listContacts = (RecyclerView) mainView.findViewById(R.id.users_list);
@@ -78,7 +78,7 @@ public class ContactsFragment extends Fragment {
         listContacts.setAdapter(mAdapter);
 
 
-        super.onActivityCreated(savedInstanceState);
+
         ((MainActivity) getActivity()).checkMenu(R.id.drawer_contacts);
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();

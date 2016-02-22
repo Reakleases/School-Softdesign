@@ -40,6 +40,7 @@
             android:id="@+id/fab"
             style="@style/FabStyle"
             android:src="@drawable/ic_add"
+            android:visibility="invisible"
             app:layout_anchorGravity="bottom|right|end" />
 
         <android.support.v4.widget.NestedScrollView

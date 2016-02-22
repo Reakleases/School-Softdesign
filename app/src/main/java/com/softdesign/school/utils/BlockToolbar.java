@@ -16,7 +16,8 @@ public class BlockToolbar {
                 public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
                     return drag;
                 }
-            });
+            }
+            );
         }
     }
 }

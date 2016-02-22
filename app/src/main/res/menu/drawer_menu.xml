@@ -4,7 +4,6 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/drawer_profile"
-            android:checked="true"
             android:title="@string/drawer.profile"
             android:icon="@drawable/ic_account_circle_black_24dp">
         </item>
@@ -16,7 +15,6 @@
         <item
             android:id="@+id/drawer_team"
             android:title="@string/drawer.team"
-
             android:icon="@drawable/ic_group_work_black_24dp">
         </item>
         <item
@@ -27,8 +25,7 @@
         <item
             android:id="@+id/drawer_settings"
             android:title="@string/drawer.settings"
-            android:icon="@drawable/ic_settings_black_24dp"
-            android:checkable="false">
+            android:icon="@drawable/ic_settings_black_24dp">
         </item>
     </group>
 

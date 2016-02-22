@@ -78,8 +78,9 @@ public class TeamActivity extends AppCompatActivity {
         setupDrawer();
 
         mFragmentManager = getSupportFragmentManager();
+
         View mHeaderLayout = mNavigationView.getHeaderView(0);
-        //задаем отступ в NavigationDrawer для того, чтобы элементы не уходили под StatuBar
+        //задаем отступ в NavigationDrawer для того, чтобы элементы не уходили под StatusBar
         //и не делаем отступ в версии андроида < 5.0
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mHeaderLayout.setPadding(0, getStatusBarHeight(), 0, 0);
@@ -87,19 +88,27 @@ public class TeamActivity extends AppCompatActivity {
 
 
         if (savedInstanceState == null) {
+            Lg.e("TeamActivity", "savedInstanceState=null");
             Bundle extras = getIntent().getExtras();
-            if (extras == null) {
-                mFragmentTag = ConstantManager.FRAGMENT_TAG_CONTACTS_ADD;
-            } else {
+            if (extras != null) {
+                Lg.e("TeamActivity", " extras != null");
                 String tag = extras.getString(ConstantManager.ACTIVITY_TAG);
-                mFragmentTag = tag;
+                if (tag != null) {
+                    mFragmentTag = tag;
+                    Lg.e("TeamActivity", "getting tag " + tag);
+                } else {
+                    Lg.e("TeamActivity", " corrupted tag");
+                    mFragmentTag = ConstantManager.FRAGMENT_TAG_CONTACTS_ADD;
+                }
+            } else {
+                Lg.e("TeamActivity", " tag and extras = null");
+                mFragmentTag = ConstantManager.FRAGMENT_TAG_CONTACTS_ADD;
             }
             mFragment = fragmentInstanceByTag(mFragmentTag);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_frame_container, mFragment, mFragmentTag)
                     .commit();
         }
-
         setListener();
 
 
@@ -109,6 +118,7 @@ public class TeamActivity extends AppCompatActivity {
     /**
      * Метод для инициализации своего кастомного ToolBar
      */
+
     public void getNewToolbar() {
         setSupportActionBar(mToolBar);
         mActionBar = getSupportActionBar();
@@ -272,8 +282,6 @@ public class TeamActivity extends AppCompatActivity {
      * Инициализация NavigationDrawer
      */
     private void setupDrawer() {
-        mNavigationView.getMenu().getItem(3).setEnabled(false);
-        mNavigationView.getMenu().getItem(4).setEnabled(false);
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -293,15 +301,12 @@ public class TeamActivity extends AppCompatActivity {
                     case R.id.drawer_tasks:
                         mFragmentTag = ConstantManager.FRAGMENT_TAG_TASKS;
                         clickMenu(true, mFragmentTag);
-
                         break;
                     case R.id.drawer_settings:
                         mFragmentTag = ConstantManager.FRAGMENT_TAG_SETTINGS;
                         clickMenu(true, mFragmentTag);
-
                         break;
                 }
-
                 mNavigationDrawer.closeDrawers();
                 return false;
             }
@@ -310,17 +315,17 @@ public class TeamActivity extends AppCompatActivity {
     }
 
     /**
-     *
      * @param activity если true, запускаем другой активити
-     * @param tag тэг по которому определиться фрагмент, или же если
-     *            activity = false, то передадим тэг фрагменту другому активити
+     * @param tag      тэг по которому определиться фрагмент, или же если
+     *                 activity = false, то передадим тэг фрагменту другому активити
      */
-    private void clickMenu (boolean activity, String tag) {
+    private void clickMenu(boolean activity, String tag) {
 
         if (activity) {
             Intent intent = new Intent(TeamActivity.this, MainActivity.class);
-            intent.putExtra(ConstantManager.ACTIVITY_TAG,tag);
+            intent.putExtra(ConstantManager.ACTIVITY_TAG, tag);
             startActivity(intent);
+            finish();
         } else {
             mFragment = fragmentInstanceByTag(tag);
             getSupportFragmentManager().beginTransaction()
@@ -384,7 +389,7 @@ public class TeamActivity extends AppCompatActivity {
                 }
                 break;
             default:
-                newFragment = mFragmentManager.findFragmentById(R.id.main_frame_container);
+                newFragment = new ContactsFragmentAdd();
                 break;
         }
         return newFragment;

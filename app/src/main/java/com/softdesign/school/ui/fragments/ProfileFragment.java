@@ -24,11 +24,7 @@ public class ProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View convertView = inflater.inflate(R.layout.fragment_profile, null);
-        ((MainActivity) getActivity()).collapseAppBar(false);
-
-        return convertView;
+        return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
     @Override
@@ -37,7 +33,7 @@ public class ProfileFragment extends Fragment {
         ((MainActivity) getActivity()).checkMenu(R.id.drawer_profile);
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab); //инициализируем fab из активити
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) fab.getLayoutParams(); // получаем параметры Layout fab приведенные к родителю
-
+        ((MainActivity) getActivity()).collapseAppBar(false);
         params.setAnchorId(R.id.appbar_layout); //выставляем привязку якоря к appBarLayout
         params.anchorGravity = Gravity.BOTTOM | Gravity.END; //выставляем anchorGravity
         fab.setLayoutParams(params);
@@ -45,9 +41,4 @@ public class ProfileFragment extends Fragment {
     }
 
 
-
-
-    private void setupFuncionality(String Funcionality) {
-
-    }
 }

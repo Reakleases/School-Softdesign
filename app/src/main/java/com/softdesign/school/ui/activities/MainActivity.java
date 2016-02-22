@@ -68,21 +68,38 @@ public class MainActivity extends AppCompatActivity {
         mFragmentManager = getSupportFragmentManager();
 
 
-        fabClick();
+        //fabClick();
         getNewToolbar();
         setupToolbar();
         setupDrawer();
 
-        //задаем отступ в NavigationDrawer для того, чтобы элементы не уходили под StatuBar
+        //задаем отступ в NavigationDrawer для того, чтобы элементы не уходили под StatusBar
         //и не делаем отступ в версии андроида < 5.0
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mHeaderLayout.setPadding(0, getStatusBarHeight(), 0, 0);
         }
+        collapseAppBar(true);
 
-        //первый запуск
         if (savedInstanceState == null) {
+            Lg.e ("MainActivity","savedInstanceState=null");
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                Lg.e ("MainActivity"," extras != null");
+                String tag = extras.getString(ConstantManager.ACTIVITY_TAG);
+                if (tag != null) {
+                    Lg.e ("MainActivity","getting tag "+tag);
+                    mFragmentTag = tag;
+                } else {
+                    Lg.e("MainActivity", " corrupted tag");
+                    mFragmentTag = ConstantManager.FRAGMENT_TAG_PROFILE;
+                }
+            } else {
+                Lg.e("MainActivity", " tag and extras = null");
+                mFragmentTag = ConstantManager.FRAGMENT_TAG_PROFILE;
+            }
+            mFragment = fragmentInstanceByTag(mFragmentTag);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_frame_container, new ProfileFragment())
+                    .replace(R.id.main_frame_container, mFragment, mFragmentTag)
                     .commit();
         }
     }
@@ -193,54 +210,63 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * Инициализация NavigationDrawer
-     */
+    * Инициализация NavigationDrawer
+    */
     private void setupDrawer() {
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-                                                              @Override
-                                                              public boolean onNavigationItemSelected(MenuItem item) {
-                                                                  Intent intent;
-                                                                  switch (item.getItemId()) {
-                                                                      case R.id.drawer_profile:
-                                                                          mFragmentTag = ConstantManager.FRAGMENT_TAG_PROFILE;
-                                                                          break;
-                                                                      case R.id.drawer_contacts:
-                                                                          //mFragment = new ContactsFragment();
-                                                                          intent = new Intent(MainActivity.this, TeamActivity.class);
-                                                                          intent.putExtra(ConstantManager.ACTIVITY_TAG, ConstantManager.FRAGMENT_TAG_CONTACTS_ADD);
-                                                                          startActivity(intent);
-                                                                          mFragmentTag = null;
-                                                                          break;
-                                                                      case R.id.drawer_team:
-                                                                          //mFragment = new TeamFragment();
-                                                                          intent = new Intent(MainActivity.this, TeamActivity.class);
-                                                                          intent.putExtra(ConstantManager.ACTIVITY_TAG, ConstantManager.FRAGMENT_TAG_TEAM_ADD);
-                                                                          startActivity(intent);
-                                                                          mFragmentTag = null;
-                                                                          break;
-                                                                      case R.id.drawer_tasks:
-                                                                          mFragmentTag = ConstantManager.FRAGMENT_TAG_TASKS;
-                                                                          intent = new Intent(MainActivity.this, TeamActivity.class);
-                                                                          startActivity(intent);
-                                                                          break;
-                                                                      case R.id.drawer_settings:
-                                                                          mFragmentTag = ConstantManager.FRAGMENT_TAG_SETTINGS;
-                                                                          break;
-                                                                  }
-                                                                  if (mFragmentTag != null) {
-                                                                      getSupportFragmentManager().beginTransaction()
-                                                                              .replace(R.id.main_frame_container, fragmentInstanceByTag(mFragmentTag))
-                                                                              .addToBackStack(mFragmentTag)
-                                                                              .commit();
-                                                                  }
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.drawer_profile:
+                        mFragmentTag = ConstantManager.FRAGMENT_TAG_PROFILE;
+                        clickMenu(false, mFragmentTag);
+                        break;
+                    case R.id.drawer_contacts:
+                        mFragmentTag = ConstantManager.FRAGMENT_TAG_CONTACTS_ADD;
+                        clickMenu(true, mFragmentTag);
+                        break;
+                    case R.id.drawer_team:
+                        mFragmentTag = ConstantManager.FRAGMENT_TAG_TEAM_ADD;
+                        clickMenu(true, mFragmentTag);
+                        break;
+                    case R.id.drawer_tasks:
+                        mFragmentTag = ConstantManager.FRAGMENT_TAG_TASKS;
+                        clickMenu(false, mFragmentTag);
 
-                                                                  mNavigationDrawer.closeDrawers();
-                                                                  return false;
-                                                              }
-                                                          }
+                        break;
+                    case R.id.drawer_settings:
+                        mFragmentTag = ConstantManager.FRAGMENT_TAG_SETTINGS;
+                        clickMenu(false, mFragmentTag);
 
-        );
+                        break;
+                }
+                mNavigationDrawer.closeDrawers();
+                return false;
+            }
+        });
 
+    }
+
+    /**
+     *
+     * @param activity если true, запускаем другой активити
+     * @param tag тэг по которому определиться фрагмент, или же если
+     *            activity = false, то передадим тэг фрагменту другому активити
+     */
+    private void clickMenu (boolean activity, String tag) {
+
+        if (activity) {
+            Intent intent = new Intent(MainActivity.this, TeamActivity.class);
+            intent.putExtra(ConstantManager.ACTIVITY_TAG,tag);
+            startActivity(intent);
+            finish();
+        } else {
+            mFragment = fragmentInstanceByTag(tag);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_frame_container, mFragment, tag)
+                    .addToBackStack(tag)
+                    .commit();
+        }
 
     }
 
@@ -297,13 +323,13 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             default:
-                newFragment = mFragmentManager.findFragmentById(R.id.main_frame_container);
+                newFragment = new ProfileFragment();
                 break;
         }
         return newFragment;
     }
 
-    // методы переопределяющий событе по клику назад, чтобы закрыть Navigation View, если он открыт
+    // методы переопределяющий события по клику назад, чтобы закрыть Navigation View, если он открыт
     @Override
     public void onBackPressed() {
         if (isNavDrawerOpen()) {
@@ -351,9 +377,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             };
+            mAppBar.addOnOffsetChangedListener(mListener);
             mAppBar.setExpanded(false);
             BlockToolbar.setDrag(false, mAppBar);
-            mAppBar.addOnOffsetChangedListener(mListener);
+
         } else {
             UnLockToolBar();
             mAppBar.setExpanded(true);
