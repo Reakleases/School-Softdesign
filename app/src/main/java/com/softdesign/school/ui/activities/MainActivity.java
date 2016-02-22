@@ -68,17 +68,17 @@ public class MainActivity extends AppCompatActivity {
         mFragmentManager = getSupportFragmentManager();
 
 
-        //fabClick();
+        fabClick();
         getNewToolbar();
         setupToolbar();
         setupDrawer();
 
-        //задаем отступ в NavigationDrawer для того, чтобы элементы не уходили под StatusBar
+        //задаем отступ в NavigationDrawer для того, чтобы элементы не уходили под StatuBar
         //и не делаем отступ в версии андроида < 5.0
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mHeaderLayout.setPadding(0, getStatusBarHeight(), 0, 0);
         }
-        collapseAppBar(true);
+
 
         if (savedInstanceState == null) {
             Lg.e ("MainActivity","savedInstanceState=null");
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
             mFragment = fragmentInstanceByTag(mFragmentTag);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_frame_container, mFragment, mFragmentTag)
-                    .commit();
+                    .commitAllowingStateLoss();
         }
     }
 
@@ -329,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
         return newFragment;
     }
 
-    // методы переопределяющий события по клику назад, чтобы закрыть Navigation View, если он открыт
+    // методы переопределяющие события по клику назад, чтобы закрыть Navigation View, если он открыт
     @Override
     public void onBackPressed() {
         if (isNavDrawerOpen()) {
@@ -365,6 +365,7 @@ public class MainActivity extends AppCompatActivity {
      * @param collapse true - свернуть / false -  развернуть
      */
     public void collapseAppBar(boolean collapse) {
+        Lg.e ("collapseAppBar", "calling method");
         if (collapse) {
             UnLockToolBar();
             AppBarLayout.OnOffsetChangedListener mListener = new AppBarLayout.OnOffsetChangedListener() {
@@ -406,6 +407,5 @@ public class MainActivity extends AppCompatActivity {
                 AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP);
         mCollapsingToolbar.setLayoutParams(params);
     }
-
 }
 

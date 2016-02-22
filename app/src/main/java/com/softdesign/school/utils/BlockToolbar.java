@@ -7,8 +7,10 @@ import android.support.v4.view.ViewCompat;
 
 public class BlockToolbar {
     public static void setDrag(boolean isDrag, AppBarLayout appBar) {
+        Lg.e("Blocktoolbar", "start");
         final boolean drag = isDrag;
         if (ViewCompat.isLaidOut(appBar)) {
+            Lg.e("isLaidOut", "true");
             CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBar.getLayoutParams();
             AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
             behavior.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
@@ -16,8 +18,7 @@ public class BlockToolbar {
                 public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
                     return drag;
                 }
-            }
-            );
+            });
         }
     }
 }
