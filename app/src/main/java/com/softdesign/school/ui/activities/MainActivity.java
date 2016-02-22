@@ -8,6 +8,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,10 +20,14 @@ import android.view.View;
 
 import com.softdesign.school.R;
 import com.softdesign.school.ui.fragments.ContactsFragment;
+import com.softdesign.school.ui.fragments.ContactsFragmentAdd;
 import com.softdesign.school.ui.fragments.ProfileFragment;
 import com.softdesign.school.ui.fragments.SettingFragment;
 import com.softdesign.school.ui.fragments.TasksFragment;
+import com.softdesign.school.ui.fragments.TeamFragment;
+import com.softdesign.school.ui.fragments.TeamFragmentAdd;
 import com.softdesign.school.utils.BlockToolbar;
+import com.softdesign.school.utils.ConstantManager;
 import com.softdesign.school.utils.Lg;
 
 import butterknife.Bind;
@@ -43,7 +48,9 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.fab)
     FloatingActionButton mFloatingActionButton;
 
+    private FragmentManager mFragmentManager;
     private Fragment mFragment;
+    private String mFragmentTag = null;
     private ActionBar mActionBar;
     public AppBarLayout.LayoutParams params = null;
 
@@ -58,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         //для обращения к элементам NavigationView
         View mHeaderLayout = mNavigationView.getHeaderView(0);
-
+        mFragmentManager = getSupportFragmentManager();
 
 
         fabClick();
@@ -190,38 +197,110 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupDrawer() {
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.drawer_profile:
-                        mFragment = new ProfileFragment();
-                        break;
-                    case R.id.drawer_contacts:
-                        mFragment = new ContactsFragment();
-                        break;
-                    case R.id.drawer_team:
-                        //mFragment = new TeamFragment();
-                        Intent intent = new Intent(MainActivity.this, TeamActivity.class);
-                        startActivity(intent);
-                        break;
-                    case R.id.drawer_tasks:
-                        mFragment = new TasksFragment();
-                        break;
-                    case R.id.drawer_settings:
-                        mFragment = new SettingFragment();
-                        break;
-                }
-                if (mFragment != null) {
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_frame_container, mFragment)
-                            .addToBackStack(mFragment.getClass().getName())
-                            .commit();
-                }
-                mNavigationDrawer.closeDrawers();
-                return false;
-            }
-        });
+                                                              @Override
+                                                              public boolean onNavigationItemSelected(MenuItem item) {
+                                                                  Intent intent;
+                                                                  switch (item.getItemId()) {
+                                                                      case R.id.drawer_profile:
+                                                                          mFragmentTag = ConstantManager.FRAGMENT_TAG_PROFILE;
+                                                                          break;
+                                                                      case R.id.drawer_contacts:
+                                                                          //mFragment = new ContactsFragment();
+                                                                          intent = new Intent(MainActivity.this, TeamActivity.class);
+                                                                          intent.putExtra(ConstantManager.ACTIVITY_TAG, ConstantManager.FRAGMENT_TAG_CONTACTS_ADD);
+                                                                          startActivity(intent);
+                                                                          mFragmentTag = null;
+                                                                          break;
+                                                                      case R.id.drawer_team:
+                                                                          //mFragment = new TeamFragment();
+                                                                          intent = new Intent(MainActivity.this, TeamActivity.class);
+                                                                          intent.putExtra(ConstantManager.ACTIVITY_TAG, ConstantManager.FRAGMENT_TAG_TEAM_ADD);
+                                                                          startActivity(intent);
+                                                                          mFragmentTag = null;
+                                                                          break;
+                                                                      case R.id.drawer_tasks:
+                                                                          mFragmentTag = ConstantManager.FRAGMENT_TAG_TASKS;
+                                                                          intent = new Intent(MainActivity.this, TeamActivity.class);
+                                                                          startActivity(intent);
+                                                                          break;
+                                                                      case R.id.drawer_settings:
+                                                                          mFragmentTag = ConstantManager.FRAGMENT_TAG_SETTINGS;
+                                                                          break;
+                                                                  }
+                                                                  if (mFragmentTag != null) {
+                                                                      getSupportFragmentManager().beginTransaction()
+                                                                              .replace(R.id.main_frame_container, fragmentInstanceByTag(mFragmentTag))
+                                                                              .addToBackStack(mFragmentTag)
+                                                                              .commit();
+                                                                  }
 
+                                                                  mNavigationDrawer.closeDrawers();
+                                                                  return false;
+                                                              }
+                                                          }
+
+        );
+
+
+    }
+
+    /**
+     * Создаем фрагмент по его тегу
+     *
+     * @param mFragmentTag - тег фрагмента
+     * @return фрагмент
+     */
+    private Fragment fragmentInstanceByTag(String mFragmentTag) {
+
+        Fragment newFragment;
+        switch (mFragmentTag) {
+            case ConstantManager.FRAGMENT_TAG_PROFILE:
+                newFragment = mFragmentManager.findFragmentByTag(mFragmentTag);
+                if (newFragment == null) {
+                    newFragment = new ProfileFragment();
+                }
+                break;
+            case ConstantManager.FRAGMENT_TAG_CONTACTS:
+                newFragment = mFragmentManager.findFragmentByTag(mFragmentTag);
+                if (newFragment == null) {
+                    newFragment = new ContactsFragment();
+                }
+                break;
+            case ConstantManager.FRAGMENT_TAG_TEAM:
+                newFragment = mFragmentManager.findFragmentByTag(mFragmentTag);
+                if (newFragment == null) {
+                    newFragment = new TeamFragment();
+                }
+                break;
+            case ConstantManager.FRAGMENT_TAG_SETTINGS:
+                newFragment = mFragmentManager.findFragmentByTag(mFragmentTag);
+                if (newFragment == null) {
+                    newFragment = new SettingFragment();
+                }
+                break;
+            case ConstantManager.FRAGMENT_TAG_TASKS:
+                newFragment = mFragmentManager.findFragmentByTag(mFragmentTag);
+                if (newFragment == null) {
+                    newFragment = new TasksFragment();
+                }
+                break;
+            case ConstantManager.FRAGMENT_TAG_CONTACTS_ADD:
+                newFragment = mFragmentManager.findFragmentByTag(mFragmentTag);
+                if (newFragment == null) {
+                    newFragment = new ContactsFragmentAdd();
+                }
+                break;
+            case ConstantManager.FRAGMENT_TAG_TEAM_ADD:
+                newFragment = mFragmentManager.findFragmentByTag(mFragmentTag);
+                if (newFragment == null) {
+                    newFragment = new TeamFragmentAdd();
+                }
+                break;
+            default:
+                newFragment = mFragmentManager.findFragmentById(R.id.main_frame_container);
+                break;
+        }
+        return newFragment;
     }
 
     // методы переопределяющий событе по клику назад, чтобы закрыть Navigation View, если он открыт
@@ -300,5 +379,6 @@ public class MainActivity extends AppCompatActivity {
                 AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP);
         mCollapsingToolbar.setLayoutParams(params);
     }
+
 }
 

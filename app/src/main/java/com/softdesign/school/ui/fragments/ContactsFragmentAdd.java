@@ -17,18 +17,18 @@ import android.view.ViewGroup;
 
 import com.softdesign.school.R;
 import com.softdesign.school.data.storage.models.User;
-import com.softdesign.school.ui.adapters.RecycleUserAdapter;
+import com.softdesign.school.ui.activities.TeamActivity;
+import com.softdesign.school.ui.adapters.RecyclerUserAdapter;
 
 import java.util.List;
 
 
-public class UserFragmentAdd extends Fragment implements LoaderManager.LoaderCallbacks<List<User>>{
+public class ContactsFragmentAdd extends Fragment implements LoaderManager.LoaderCallbacks<List<User>> {
 
-    private RecyclerView.Adapter mRecycleUserAdapter;
+    private RecyclerView.Adapter mRecyclerUserAdapter;
     RecyclerView listContacts;
     View mView;
     List<User> mUsers;
-
 
 
     @Nullable
@@ -38,8 +38,8 @@ public class UserFragmentAdd extends Fragment implements LoaderManager.LoaderCal
     }
 
 
-    public void reloadFragment(){
-        getLoaderManager().initLoader(0,null,this).forceLoad();
+    public void reloadFragment() {
+        getLoaderManager().initLoader(0, null, this).forceLoad();
     }
 
 
@@ -47,7 +47,7 @@ public class UserFragmentAdd extends Fragment implements LoaderManager.LoaderCal
     public void onAttach(Context context) {
         super.onAttach(context);
         mUsers = User.getDataListUsers();
-        mRecycleUserAdapter = new RecycleUserAdapter(mUsers);
+        mRecyclerUserAdapter = new RecyclerUserAdapter(mUsers);
     }
 
 
@@ -55,16 +55,15 @@ public class UserFragmentAdd extends Fragment implements LoaderManager.LoaderCal
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(R.string.drawer_contacts);
-        getLoaderManager().initLoader(0,null,this);
+        ((TeamActivity) getActivity()).checkMenu(R.id.drawer_contacts);
+        getLoaderManager().initLoader(0, null, this);
         listContacts = (RecyclerView) mView.findViewById(R.id.users_list);
         //listContacts.setHasFixedSize(true);
         RecyclerView.LayoutManager LayoutManager = new LinearLayoutManager(getActivity());
         listContacts.setLayoutManager(LayoutManager);
-        listContacts.setAdapter(mRecycleUserAdapter);
+        listContacts.setAdapter(mRecyclerUserAdapter);
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.hide();
-
-
 
 
     }
@@ -81,8 +80,8 @@ public class UserFragmentAdd extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public void onLoadFinished(Loader<List<User>> loader, List<User> data) {
-        mRecycleUserAdapter = new RecycleUserAdapter(data);
-        listContacts.setAdapter(mRecycleUserAdapter);
+        mRecyclerUserAdapter = new RecyclerUserAdapter(data);
+        listContacts.setAdapter(mRecyclerUserAdapter);
     }
 
     @Override
@@ -150,7 +149,6 @@ public class UserFragmentAdd extends Fragment implements LoaderManager.LoaderCal
         mUsersOld.add(new UserOld(ContextCompat.getDrawable(getActivity(), R.drawable.ic_account_circle_24dp), "Инга", "Инжир"));
         mUsersOld.add(new UserOld(ContextCompat.getDrawable(getActivity(), R.drawable.ic_account_circle_24dp), "Анна", "Пожидаева"));
     }*/
-
 
 
 }

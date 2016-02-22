@@ -11,12 +11,12 @@ import com.softdesign.school.data.storage.models.User;
 
 import java.util.List;
 
-public class RecycleUserAdapter extends RecyclerView.Adapter<RecycleUserAdapter.UserViewHolder> {
+public class RecyclerUserAdapter extends RecyclerView.Adapter<RecyclerUserAdapter.UserViewHolder> {
 
 
     private List<User> mDataSet;
 
-    public RecycleUserAdapter(List<User> mDataSet) {
+    public RecyclerUserAdapter(List<User> mDataSet) {
         this.mDataSet = mDataSet;
     }
 
