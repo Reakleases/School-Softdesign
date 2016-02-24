@@ -10,12 +10,13 @@
 
     <!-- NavigationHeader -->
     <string name="header_text.user">Амир Коновалов</string>
-    <string name="header_text.rait">100</string>
+    <string name="header_text.rait">99</string>
     <string name="header_text.email">Reaklease@gmail.com</string>
 
     <!-- Fonts -->
     <string name="roboto.regular">sans-serif</string>
     <string name="roboto.medium">sans-serif-medium</string>
+    <string name="roboto.large">sans-serif-large</string>
 
     <!-- Fragments text -->
     <string name="fragment_text.profile">Здесь будет профиль</string>
@@ -23,6 +24,27 @@
     <string name="fragment_text.tasks">Здесь будут задачи</string>
     <string name="fragment_text.team">Здесь будет команда</string>
     <string name="fragment_text.settings">Здесь будут настройки</string>
+
+
+    <!-- copypasted -->
+
+    <!-- Strings-->
+    <string name="fragment.profile.phone.value">8 (917) 826-58-76</string>
+    <string name="fragment.profile.phone.label.mobile">Мобильный</string>
+    <string name="fragment.profile.title">Коновалов Амир</string>
+    <string name="fragment.contacts.description">Тут будут контакты</string>
+    <string name="fragment.contacts.title">Мои контакты</string>
+
+
+    <string name="profile.email">makweb@yandex.ru</string>
+    <string name="fragment.profile.email.value">Reakleases@gmail.com</string>
+    <string name="fragment.profile.email.label">E-mail</string>
+    <string name="fragment.profile.vk.value">vk.com/Reakleases</string>
+    <string name="fragment.profile.vk.label">Профиль в VK</string>
+    <string name="fragment.profile.git.value">github.com/Reakleases/School-Softdesign</string>
+    <string name="fragment.profile.git.label">Репозиторий</string>
+    <string name="fragment.profile.bio.value">111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</string>
+    <string name="fragment.profile.bio.label">О себе</string>
 
 
 </resources>

@@ -10,9 +10,7 @@ import android.view.ViewGroup;
 import com.softdesign.school.R;
 import com.softdesign.school.ui.activities.MainActivity;
 
-/**
- * Created by Remapper on 29.01.2016.
- */
+
 public class TeamFragment extends Fragment {
 
     @Nullable
@@ -21,8 +19,15 @@ public class TeamFragment extends Fragment {
 
         View convertView = inflater.inflate(R.layout.fragment_team, null);
         getActivity().setTitle(R.string.drawer_team);
-        ((MainActivity)getActivity()).checkMenu(R.id.drawer_team);
+
+        ((MainActivity) getActivity()).collapseAppBar(true);
 
         return convertView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ((MainActivity) getActivity()).checkMenu(R.id.drawer_team);
     }
 }
