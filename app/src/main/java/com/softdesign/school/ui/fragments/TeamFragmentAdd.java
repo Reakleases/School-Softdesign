@@ -42,7 +42,7 @@ public class TeamFragmentAdd extends Fragment implements LoaderManager.LoaderCal
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        return mView = inflater.inflate(R.layout.fragment_team, container, false);
+        return mView = inflater.inflate(R.layout.fragment_add_team, container, false);
     }
 
     @Override

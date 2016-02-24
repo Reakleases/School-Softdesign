@@ -194,7 +194,7 @@ public class TeamActivity extends AppCompatActivity {
                     case R.id.btn_add_user:
                         Lg.e("btn", "user");
                         title = "Добавить Пользователя?";
-                        view = inflater.inflate(R.layout.dialog_add_user, null);
+                        view = inflater.inflate(R.layout.dialog_add_contact, null);
                         configDialog(title, view, true);
                         break;
                 }
@@ -220,11 +220,13 @@ public class TeamActivity extends AppCompatActivity {
 
         //spinner
         if (needSpinner) {
-            mSpinner = (Spinner) layout.findViewById(R.id.spinner);
+
             mFirstName = (EditText) layout.findViewById(R.id.et_add_firstname_value);
             mLastName = (EditText) layout.findViewById(R.id.et_add_lastname_value);
             Team.getAllNames();
             ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, Team.getAllNames());
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner = (Spinner) layout.findViewById(R.id.spinner);
             mSpinner.setAdapter(spinnerAdapter);
         } else {
             mTeam = (EditText) layout.findViewById(R.id.et_add_team_value);
@@ -240,15 +242,17 @@ public class TeamActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 if (needSpinner) {
                                     saveDataUser();
-                                 /*   Fragment fragment = getSupportFragmentManager().findFragmentByTag("UserAddTag");
-                                    if (fragment instanceof ContactsFragmentAdd)
-                                        ((ContactsFragmentAdd) fragment).reloadFragment();*/
-                                    ((ContactsFragmentAdd) fragmentInstanceByTag(mFragmentTag))
-                                            .reloadFragment();
+                                    if (mFragmentTag.equals(ConstantManager.FRAGMENT_TAG_CONTACTS_ADD)){
+                                        ((ContactsFragmentAdd) fragmentInstanceByTag(mFragmentTag))
+                                                .reloadFragment();
+                                    }
                                 } else {
                                     saveDataTeam();
-                                    ((TeamFragmentAdd) fragmentInstanceByTag(mFragmentTag))
-                                            .reloadFragment();
+                                    if (mFragmentTag.equals(ConstantManager.FRAGMENT_TAG_TEAM_ADD)) {
+                                        ((TeamFragmentAdd) fragmentInstanceByTag(mFragmentTag))
+                                                .reloadFragment();
+                                    }
+
                                 }
                                 dialog.cancel();
                             }

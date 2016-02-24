@@ -11,6 +11,7 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ public class ContactsFragmentAdd extends Fragment implements LoaderManager.Loade
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return mView = inflater.inflate(R.layout.fragment_contacts, container, false);
+        return mView = inflater.inflate(R.layout.fragment_add_contacts, container, false);
     }
 
 
@@ -58,12 +59,28 @@ public class ContactsFragmentAdd extends Fragment implements LoaderManager.Loade
         ((TeamActivity) getActivity()).checkMenu(R.id.drawer_contacts);
         getLoaderManager().initLoader(0, null, this);
         listContacts = (RecyclerView) mView.findViewById(R.id.users_list);
-        //listContacts.setHasFixedSize(true);
+        listContacts.setHasFixedSize(true);
         RecyclerView.LayoutManager LayoutManager = new LinearLayoutManager(getActivity());
         listContacts.setLayoutManager(LayoutManager);
         listContacts.setAdapter(mRecyclerUserAdapter);
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.hide();
+
+
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
+                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+                    @Override
+                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                        ((RecyclerUserAdapter.UserViewHolder) viewHolder).getUser().delete();
+                    }
+                });
+        itemTouchHelper.attachToRecyclerView(listContacts);
 
 
     }

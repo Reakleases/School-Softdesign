@@ -22,7 +22,7 @@ public class RecyclerUserAdapter extends RecyclerView.Adapter<RecyclerUserAdapte
 
     @Override
     public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_user, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_contact, parent, false);
         return new UserViewHolder(v);
     }
 
@@ -38,16 +38,21 @@ public class RecyclerUserAdapter extends RecyclerView.Adapter<RecyclerUserAdapte
         return mDataSet.size();
     }
 
-    public static class UserViewHolder extends RecyclerView.ViewHolder {
+    public class UserViewHolder extends RecyclerView.ViewHolder {
 
         protected TextView fullName;
         protected TextView teamName;
+        private User mUser;
 
         public UserViewHolder(View convertView) {
             super(convertView);
             fullName = (TextView) convertView.findViewById(R.id.user_full_name);
             teamName = (TextView) convertView.findViewById(R.id.user_team);
 
+        }
+
+        public User getUser() {
+            return mUser;
         }
     }
 

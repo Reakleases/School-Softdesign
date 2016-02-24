@@ -5,10 +5,10 @@
     android:orientation="vertical">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/users_list"
+        android:id="@+id/team_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:minHeight="500dp">
+        android:minHeight="430dp">
 
     </android.support.v7.widget.RecyclerView>
 
