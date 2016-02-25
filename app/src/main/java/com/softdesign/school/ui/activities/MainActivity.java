@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
             mFragment = fragmentInstanceByTag(mFragmentTag);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_frame_container, mFragment, mFragmentTag)
-                    .commitAllowingStateLoss();
+                    .commit();
         }
     }
 

@@ -28,12 +28,12 @@ import com.softdesign.school.R;
 import com.softdesign.school.data.storage.models.Team;
 import com.softdesign.school.data.storage.models.User;
 import com.softdesign.school.ui.fragments.ContactsFragment;
+import com.softdesign.school.ui.fragments.ContactsFragmentAdd;
 import com.softdesign.school.ui.fragments.ProfileFragment;
 import com.softdesign.school.ui.fragments.SettingFragment;
 import com.softdesign.school.ui.fragments.TasksFragment;
 import com.softdesign.school.ui.fragments.TeamFragment;
 import com.softdesign.school.ui.fragments.TeamFragmentAdd;
-import com.softdesign.school.ui.fragments.ContactsFragmentAdd;
 import com.softdesign.school.utils.ConstantManager;
 import com.softdesign.school.utils.Lg;
 
@@ -110,6 +110,8 @@ public class TeamActivity extends AppCompatActivity {
                     .commit();
         }
         setListener();
+
+
 
 
     }
@@ -223,7 +225,6 @@ public class TeamActivity extends AppCompatActivity {
 
             mFirstName = (EditText) layout.findViewById(R.id.et_add_firstname_value);
             mLastName = (EditText) layout.findViewById(R.id.et_add_lastname_value);
-            Team.getAllNames();
             ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, Team.getAllNames());
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mSpinner = (Spinner) layout.findViewById(R.id.spinner);
