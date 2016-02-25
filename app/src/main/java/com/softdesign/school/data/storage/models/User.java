@@ -39,7 +39,7 @@ public class User extends Model {
         return team;
     }
 
-    public static List<User> getDataListUsers() {
+    public static List<User> getAll() {
         return new Select()
                 .from(User.class)
                 .execute();

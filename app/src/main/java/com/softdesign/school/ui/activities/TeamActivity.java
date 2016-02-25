@@ -72,7 +72,6 @@ public class TeamActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setTitle("Контакты");
 
-
         getNewToolbar();
         setupToolbar();
         setupDrawer();
@@ -188,13 +187,11 @@ public class TeamActivity extends AppCompatActivity {
                 View view;
                 switch (v.getId()) {
                     case R.id.btn_add_team:
-                        Lg.e("btn", "team");
                         title = "Добавить Команду?";
                         view = inflater.inflate(R.layout.dialog_add_team, null);
                         configDialog(title, view, false);
                         break;
                     case R.id.btn_add_user:
-                        Lg.e("btn", "user");
                         title = "Добавить Пользователя?";
                         view = inflater.inflate(R.layout.dialog_add_contact, null);
                         configDialog(title, view, true);

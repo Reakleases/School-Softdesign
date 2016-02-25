@@ -37,7 +37,7 @@ public class Team extends Model {
     }
 
     public static List<String> getAllNames() {
-        List<Team> teams = getDataListTeams();
+        List<Team> teams = getAll();
         List<String> names = new ArrayList<String>(teams.size());
         for (Team t : teams) {
             names.add(t.name);
@@ -45,11 +45,9 @@ public class Team extends Model {
         return names;
     }
 
-
-    public static List<Team> getDataListTeams() {
+    public static List<Team> getAll() {
         return new Select()
                 .from(Team.class)
-                .orderBy("name ASC")
                 .execute();
     }
 

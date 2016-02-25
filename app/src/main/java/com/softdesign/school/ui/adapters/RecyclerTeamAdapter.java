@@ -19,11 +19,15 @@ public class RecyclerTeamAdapter extends RecyclerView.Adapter<RecyclerTeamAdapte
     public class TeamViewHolder extends RecyclerView.ViewHolder {
 
         protected TextView teamName;
+        private Team mTeam;
 
         public TeamViewHolder(View itemView) {
             super(itemView);
             teamName = (TextView) itemView.findViewById(R.id.user_team);
 
+        }
+        public Team getTeam() {
+            return mTeam;
         }
     }
 
@@ -42,6 +46,7 @@ public class RecyclerTeamAdapter extends RecyclerView.Adapter<RecyclerTeamAdapte
     public void onBindViewHolder(TeamViewHolder holder, int position) {
         Team team = mDataSet.get(position);
         holder.teamName.setText(team.getName());
+        holder.mTeam = team;
 
     }
 

@@ -20,6 +20,7 @@ import com.softdesign.school.R;
 import com.softdesign.school.data.storage.models.User;
 import com.softdesign.school.ui.activities.TeamActivity;
 import com.softdesign.school.ui.adapters.RecyclerUserAdapter;
+import com.softdesign.school.utils.Lg;
 
 import java.util.List;
 
@@ -35,20 +36,15 @@ public class ContactsFragmentAdd extends Fragment implements LoaderManager.Loade
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        getLoaderManager().initLoader(0, null, this);
         return mView = inflater.inflate(R.layout.fragment_add_contacts, container, false);
-    }
-
-
-    public void reloadFragment() {
-        getLoaderManager().initLoader(0, null, this).forceLoad();
     }
 
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mUsers = User.getDataListUsers();
-        mRecyclerUserAdapter = new RecyclerUserAdapter(mUsers);
+
     }
 
 
@@ -57,7 +53,9 @@ public class ContactsFragmentAdd extends Fragment implements LoaderManager.Loade
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(R.string.drawer_contacts);
         ((TeamActivity) getActivity()).checkMenu(R.id.drawer_contacts);
-        getLoaderManager().initLoader(0, null, this);
+        mUsers = User.getAll();
+        mRecyclerUserAdapter = new RecyclerUserAdapter(mUsers);
+
         listContacts = (RecyclerView) mView.findViewById(R.id.users_list);
         listContacts.setHasFixedSize(true);
         RecyclerView.LayoutManager LayoutManager = new LinearLayoutManager(getActivity());
@@ -66,10 +64,8 @@ public class ContactsFragmentAdd extends Fragment implements LoaderManager.Loade
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.hide();
 
-
-
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
-                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+                new ItemTouchHelper.SimpleCallback(1, ItemTouchHelper.LEFT) {
                     @Override
                     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                         return false;
@@ -77,15 +73,9 @@ public class ContactsFragmentAdd extends Fragment implements LoaderManager.Loade
 
                     @Override
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                        int position = viewHolder.getAdapterPosition();
-                        User user = mUsers.get(position);
-                        user.delete();
-                        getLoaderManager().getLoader(0).forceLoad();
-                        listContacts.getAdapter().notifyItemRemoved(position);
-                        getLoaderManager().getLoader(0).forceLoad();
-                        listContacts.getAdapter().notifyItemRemoved(position);
-
-                        //((RecyclerUserAdapter.UserViewHolder) viewHolder).getUser().delete();
+                        ((RecyclerUserAdapter.UserViewHolder) viewHolder).getUser().delete();
+                        mRecyclerUserAdapter.notifyDataSetChanged();
+                        reloadFragment();
 
                     }
                 });
@@ -94,27 +84,33 @@ public class ContactsFragmentAdd extends Fragment implements LoaderManager.Loade
 
     }
 
+
     @Override
     public Loader<List<User>> onCreateLoader(int id, Bundle args) {
+        Lg.e ("contac add", "onCreateLoader");
         return new AsyncTaskLoader<List<User>>(getContext()) {
             @Override
             public List<User> loadInBackground() {
-                return User.getDataListUsers();
+                return User.getAll();
             }
         };
     }
 
     @Override
     public void onLoadFinished(Loader<List<User>> loader, List<User> data) {
+        Lg.e ("contac add", "onLoadFinished");
         mRecyclerUserAdapter = new RecyclerUserAdapter(data);
         listContacts.setAdapter(mRecyclerUserAdapter);
-        mUsers.clear();
-        mUsers.addAll(data);
     }
 
     @Override
     public void onLoaderReset(Loader<List<User>> loader) {
 
+    }
+
+    public void reloadFragment() {
+        Lg.e ("contac add", "reloadFragment method");
+        getLoaderManager().initLoader(1, null, this).forceLoad();
     }
 
 

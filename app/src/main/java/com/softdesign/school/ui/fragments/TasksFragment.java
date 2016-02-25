@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.softdesign.school.R;
 import com.softdesign.school.ui.activities.MainActivity;
+import com.softdesign.school.utils.BlockToolbar;
 
 public class TasksFragment extends Fragment {
 
@@ -28,11 +29,12 @@ public class TasksFragment extends Fragment {
         ((MainActivity) getActivity()).checkMenu(R.id.drawer_tasks);
         AppBarLayout mAppbar = (AppBarLayout) getActivity().findViewById(R.id.appbar_layout);
         mAppbar.setExpanded(false,false);
+        BlockToolbar.setDrag(false,mAppbar);
         //((MainActivity) getActivity()).collapseAppBar(true);
         getActivity().setTitle(R.string.drawer_tasks);
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
-        params.setAnchorId(R.id.coordinator_container);
+        params.setAnchorId(R.id.main_frame_container);
         params.anchorGravity = Gravity.BOTTOM | Gravity.END;
         fab.setLayoutParams(params);
         fab.setImageResource(R.drawable.ic_add);

@@ -17,6 +17,8 @@ import com.softdesign.school.ui.activities.MainActivity;
 public class ProfileFragment extends Fragment {
 
 
+
+
     private static final String FUNCTIONALITY_PROFILE_VIEW = "profile_view";
     private static final String FUNCTIONALITY_PROFILE_EDIT = "profile_edit";
     private static String sCurrentFunctionality = FUNCTIONALITY_PROFILE_VIEW;

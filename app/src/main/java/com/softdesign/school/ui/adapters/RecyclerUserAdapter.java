@@ -29,6 +29,7 @@ public class RecyclerUserAdapter extends RecyclerView.Adapter<RecyclerUserAdapte
     @Override
     public void onBindViewHolder(UserViewHolder holder, int position) {
         User user = mDataSet.get(position);
+        holder.mUser = user;
         holder.fullName.setText(user.getFirstName() + " " + user.getLastName());
         holder.teamName.setText(user.getTeam().getName());
     }

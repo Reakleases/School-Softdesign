@@ -7,7 +7,6 @@ import android.support.v4.view.ViewCompat;
 
 public class BlockToolbar {
     public static void setDrag(boolean isDrag, AppBarLayout appBar) {
-        Lg.e("Blocktoolbar", "start");
         final boolean drag = isDrag;
         if (ViewCompat.isLaidOut(appBar)) {
             Lg.e("isLaidOut", "true");
