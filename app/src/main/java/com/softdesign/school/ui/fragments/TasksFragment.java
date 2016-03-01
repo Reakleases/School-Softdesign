@@ -27,11 +27,12 @@ public class TasksFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ((MainActivity) getActivity()).checkMenu(R.id.drawer_tasks);
+        getActivity().setTitle(R.string.drawer_tasks);
+
         AppBarLayout mAppbar = (AppBarLayout) getActivity().findViewById(R.id.appbar_layout);
         mAppbar.setExpanded(false,false);
         BlockToolbar.setDrag(false,mAppbar);
         //((MainActivity) getActivity()).collapseAppBar(true);
-        getActivity().setTitle(R.string.drawer_tasks);
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
         params.setAnchorId(R.id.main_frame_container);
