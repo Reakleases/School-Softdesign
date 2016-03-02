@@ -25,7 +25,6 @@ public class UserPreferences {
         for (int i = 0; i < userFields.size(); ++i) {
             preferenceEditor.putString(USER_FIELDS[i], userFields.get(i));
         }
-
         preferenceEditor.apply();
     }
 
